@@ -569,8 +569,14 @@ body.cursor-hidden * {
 }
 
 .btn-icon {
-  font-size: 0.88rem;
-  opacity: 0.9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.btn-icon svg {
+  display: block;
 }
 
 /* ==========================================================================
