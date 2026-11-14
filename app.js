@@ -15,6 +15,7 @@
 
   if (canvas && window.TopographyEngine) {
     topography = new TopographyEngine(canvas);
+    topography.render(performance.now()); // Immediate paint for zero initial delay
 
     const renderLoop = (time) => {
       topography.render(time);

@@ -1,52 +1,52 @@
 /* ==========================================================================
    rtoms-screensaver: Core Styles
-   Monochrome, Themes, 3D mechanical flip clock, Frosted Glassmorphism.
+   Monochrome, Themes, 3D mechanical flip clock, Smooth Frosted Glassmorphism.
    ========================================================================== */
 
 :root {
   --bg-color: #000000;
   
-  /* Frosted Glassmorphism Variables */
-  --card-bg: rgba(18, 18, 18, 0.72);
+  /* Reduced, Crystal-Clear Frosted Glass (Zero glitching, lines clearly visible passing through) */
+  --card-bg: rgba(12, 12, 12, 0.32);
   --card-border: rgba(255, 255, 255, 0.16);
   --card-border-highlight: rgba(255, 255, 255, 0.45);
   --card-crease: rgba(0, 0, 0, 0.85);
-  --glass-specular: rgba(255, 255, 255, 0.24);
-  --glass-blur: 24px;
+  --glass-specular: rgba(255, 255, 255, 0.28);
+  --glass-blur: 6px;
   
   --text-color: #ffffff;
   --separator-color: rgba(255, 255, 255, 0.88);
-  --date-bg: rgba(18, 18, 18, 0.62);
+  --date-bg: rgba(12, 12, 12, 0.35);
   --date-border: rgba(255, 255, 255, 0.18);
-  --date-color: rgba(255, 255, 255, 0.9);
+  --date-color: rgba(255, 255, 255, 0.92);
   --subheading-color: rgba(255, 255, 255, 0.82);
   
-  /* Large prominently centered 24-hour flip clock */
-  --card-width: clamp(3.8rem, 10.6vw, 12rem);
-  --card-height: clamp(5.8rem, 16.2vw, 18rem);
+  /* Prominently centered 24-hour flip clock */
+  --card-width: clamp(3.6rem, 9.8vw, 11rem);
+  --card-height: clamp(5.4rem, 15vw, 16.8rem);
   --card-radius: clamp(8px, 1.3vw, 16px);
-  --font-size: clamp(4.2rem, 11.6vw, 13rem);
+  --font-size: clamp(3.8rem, 10.8vw, 12rem);
   
   --flip-duration: 480ms;
   --flip-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 /* ==========================================================================
-   Themes with Tinted Frosted Glass
+   Themes with Clean, Low-Opacity Frosted Glass
    ========================================================================== */
 
 /* 1. Warmer Tone */
 body[data-theme="warm"] {
   --bg-color: #0d0905;
-  --card-bg: rgba(28, 18, 11, 0.72);
-  --card-border: rgba(255, 180, 85, 0.24);
+  --card-bg: rgba(22, 14, 8, 0.35);
+  --card-border: rgba(255, 180, 85, 0.25);
   --card-border-highlight: rgba(255, 210, 120, 0.55);
-  --glass-specular: rgba(255, 200, 120, 0.3);
-  --card-crease: rgba(12, 7, 3, 0.9);
+  --glass-specular: rgba(255, 200, 120, 0.35);
+  --card-crease: rgba(14, 8, 4, 0.9);
   --text-color: #fff6ee;
   --separator-color: rgba(255, 205, 125, 0.92);
-  --date-bg: rgba(28, 18, 11, 0.62);
-  --date-border: rgba(255, 180, 85, 0.26);
+  --date-bg: rgba(22, 14, 8, 0.35);
+  --date-border: rgba(255, 180, 85, 0.28);
   --date-color: rgba(255, 215, 140, 0.95);
   --subheading-color: rgba(255, 200, 120, 0.88);
 }
@@ -54,14 +54,14 @@ body[data-theme="warm"] {
 /* 2. Dark Green (Emerald / Tactical) */
 body[data-theme="darkgreen"] {
   --bg-color: #030d06;
-  --card-bg: rgba(8, 28, 15, 0.72);
-  --card-border: rgba(70, 235, 125, 0.25);
+  --card-bg: rgba(6, 22, 11, 0.35);
+  --card-border: rgba(70, 235, 125, 0.26);
   --card-border-highlight: rgba(140, 255, 180, 0.6);
-  --glass-specular: rgba(100, 255, 150, 0.32);
-  --card-crease: rgba(2, 12, 5, 0.9);
+  --glass-specular: rgba(100, 255, 150, 0.35);
+  --card-crease: rgba(2, 14, 6, 0.9);
   --text-color: #ebffef;
   --separator-color: rgba(90, 250, 145, 0.92);
-  --date-bg: rgba(8, 28, 15, 0.62);
+  --date-bg: rgba(6, 22, 11, 0.35);
   --date-border: rgba(70, 235, 125, 0.28);
   --date-color: rgba(110, 255, 165, 0.95);
   --subheading-color: rgba(85, 240, 140, 0.88);
@@ -70,30 +70,30 @@ body[data-theme="darkgreen"] {
 /* 3. Black & White Monochrome */
 body[data-theme="monochrome"] {
   --bg-color: #000000;
-  --card-bg: rgba(18, 18, 18, 0.72);
+  --card-bg: rgba(12, 12, 12, 0.32);
   --card-border: rgba(255, 255, 255, 0.16);
   --card-border-highlight: rgba(255, 255, 255, 0.45);
-  --glass-specular: rgba(255, 255, 255, 0.24);
+  --glass-specular: rgba(255, 255, 255, 0.28);
   --card-crease: rgba(0, 0, 0, 0.85);
   --text-color: #ffffff;
   --separator-color: rgba(255, 255, 255, 0.88);
-  --date-bg: rgba(18, 18, 18, 0.62);
+  --date-bg: rgba(12, 12, 12, 0.35);
   --date-border: rgba(255, 255, 255, 0.18);
-  --date-color: rgba(255, 255, 255, 0.9);
+  --date-color: rgba(255, 255, 255, 0.92);
   --subheading-color: rgba(255, 255, 255, 0.82);
 }
 
 /* 4. RGB Gamer Mode */
 body[data-theme="rgb"] {
   --bg-color: #050408;
-  --card-bg: rgba(18, 14, 25, 0.72);
+  --card-bg: rgba(16, 12, 24, 0.35);
   --card-border: rgba(255, 0, 128, 0.4);
   --card-border-highlight: rgba(0, 255, 200, 0.7);
   --glass-specular: rgba(255, 0, 200, 0.35);
   --card-crease: rgba(4, 2, 7, 0.9);
   --text-color: #ffffff;
   --separator-color: #00ffcc;
-  --date-bg: rgba(18, 14, 25, 0.62);
+  --date-bg: rgba(16, 12, 24, 0.35);
   --date-border: rgba(0, 255, 200, 0.4);
   --date-color: #ffffff;
   --subheading-color: #ff007f;
@@ -193,7 +193,7 @@ body.cursor-hidden * {
 }
 
 .title-subheading {
-  font-size: clamp(1.8rem, 3.4vw, 3.8rem);
+  font-size: clamp(1.8rem, 3.5vw, 4rem);
   font-weight: 700;
   color: var(--subheading-color);
   letter-spacing: 0.04em;
@@ -204,14 +204,14 @@ body.cursor-hidden * {
 }
 
 .title-heading {
-  font-size: clamp(4.6rem, 10.8vw, 12rem);
+  font-size: clamp(5.2rem, 13vw, 14.5rem);
   font-weight: 900;
   color: #ffffff;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   text-transform: lowercase;
-  line-height: 0.85;
+  line-height: 0.82;
   margin-top: clamp(2px, 0.4vw, 8px);
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.98);
+  text-shadow: 0 4px 35px rgba(0, 0, 0, 0.98);
   transition: color 0.4s ease;
 }
 
@@ -273,23 +273,25 @@ body.cursor-hidden * {
   50% { opacity: 0.3; }
 }
 
-/* Flip Card Individual Digit Unit - Frosted Glassmorphism */
+/* Flip Card Digit Unit - Clean Non-Glitching Frosted Glass */
 .flip-unit {
   position: relative;
   width: var(--card-width);
   height: var(--card-height);
   border-radius: var(--card-radius);
   background: var(--card-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--card-border);
   border-top: 1px solid var(--glass-specular);
   box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.8),
-    0 2px 10px rgba(0, 0, 0, 0.5),
+    0 24px 60px rgba(0, 0, 0, 0.75),
+    0 2px 8px rgba(0, 0, 0, 0.4),
     inset 0 1px 1px var(--glass-specular);
   perspective: 1400px;
   -webkit-perspective: 1400px;
+  transform: translateZ(0); /* Hardware accelerated compositing */
+  will-change: transform;
   transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
@@ -316,9 +318,7 @@ body.cursor-hidden * {
   width: 100%;
   height: 50%;
   overflow: hidden;
-  background: var(--card-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  background: rgba(12, 12, 12, 0.15); /* Subtle inner wash, lets blur pass through cleanly */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "SF Pro Display", monospace;
   font-size: var(--font-size);
   font-weight: 700;
@@ -326,7 +326,7 @@ body.cursor-hidden * {
   font-variant-numeric: tabular-nums;
   -webkit-font-variant-numeric: tabular-nums;
   box-sizing: border-box;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition: color 0.4s ease;
 }
 
 /* Top half properties */
@@ -466,7 +466,7 @@ body.cursor-hidden * {
 }
 
 /* ==========================================================================
-   Clock Date Display (Frosted Glass Pill)
+   Clock Date Display (Soft Frosted Glass Pill)
    ========================================================================== */
 
 .clock-date {
@@ -476,8 +476,8 @@ body.cursor-hidden * {
   padding: clamp(9px, 1.1vw, 14px) clamp(22px, 2.6vw, 40px);
   border-radius: 9999px;
   background: var(--date-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--date-border);
   border-top: 1px solid var(--glass-specular);
   font-size: clamp(1.05rem, 2vw, 1.85rem);
@@ -486,13 +486,13 @@ body.cursor-hidden * {
   text-transform: uppercase;
   color: var(--date-color);
   box-shadow: 
-    0 16px 36px rgba(0, 0, 0, 0.6),
+    0 16px 36px rgba(0, 0, 0, 0.55),
     inset 0 1px 1px var(--glass-specular);
   transition: border-color 0.4s ease, color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* ==========================================================================
-   HUD & Frosted Glassmorphism Action Bar & Buttons
+   HUD & Frosted Glass Action Bar & Buttons
    ========================================================================== */
 
 .hud-bar {
@@ -505,15 +505,15 @@ body.cursor-hidden * {
   gap: 10px;
   padding: 8px 14px;
   border-radius: 9999px;
-  background: rgba(18, 18, 22, 0.58);
-  backdrop-filter: blur(28px) saturate(200%);
-  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  background: rgba(14, 14, 18, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-top: 1px solid rgba(255, 255, 255, 0.32);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 
     0 20px 50px rgba(0, 0, 0, 0.65),
     0 4px 12px rgba(0, 0, 0, 0.4),
-    inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.22);
   z-index: 30;
   opacity: 0;
   pointer-events: none;
@@ -533,14 +533,14 @@ body.cursor-hidden * {
   gap: 8px;
   padding: 8px 16px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-top: 1px solid rgba(255, 255, 255, 0.28);
   box-shadow: 
     0 4px 14px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
   color: rgba(255, 255, 255, 0.88);
   font-family: inherit;
   font-size: 0.8rem;
@@ -559,7 +559,7 @@ body.cursor-hidden * {
   transform: translateY(-2px);
   box-shadow: 
     0 8px 22px rgba(0, 0, 0, 0.5),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    inset 0 1px 1px rgba(255, 255, 255, 0.35);
 }
 
 .hud-btn:active {
@@ -574,7 +574,7 @@ body.cursor-hidden * {
 }
 
 /* ==========================================================================
-   Kiosk / Fullscreen First Interaction Toast (Frosted Glass)
+   Kiosk / Fullscreen First Interaction Toast
    ========================================================================== */
 
 .kiosk-hint {
@@ -584,14 +584,14 @@ body.cursor-hidden * {
   transform: translateX(-50%);
   padding: 10px 24px;
   border-radius: 9999px;
-  background: rgba(20, 20, 24, 0.65);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(18, 18, 22, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
   box-shadow: 
-    0 16px 36px rgba(0, 0, 0, 0.6),
-    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    0 16px 36px rgba(0, 0, 0, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.85);
   font-size: 0.84rem;
   letter-spacing: 0.05em;
