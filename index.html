@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Minimalist monochrome topographic screensaver with a 24-hour mechanical flip clock">
+  <title>rtoms screensaver</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Topography Canvas Background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Top-Right Brand Badge -->
+  <header class="header-container">
+    <div class="brand-badge" id="brand-badge">
+      <span class="badge-dot"></span>
+      <span class="badge-text">hello rtoms</span>
+    </div>
+  </header>
+
+  <!-- Main Centered Flip Clock -->
+  <main class="clock-stage">
+    <div class="clock-container" id="flip-clock" aria-label="24-hour flip clock">
+      <!-- Hours Group -->
+      <div class="digit-pair" id="hours-group">
+        <div class="flip-unit" id="h0" data-digit="0">
+          <div class="card-half top static"><span class="digit-num">0</span></div>
+          <div class="card-half bottom static"><span class="digit-num">0</span></div>
+          <div class="card-half top flap"><span class="digit-num">0</span></div>
+          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+        </div>
+        <div class="flip-unit" id="h1" data-digit="0">
+          <div class="card-half top static"><span class="digit-num">0</span></div>
+          <div class="card-half bottom static"><span class="digit-num">0</span></div>
+          <div class="card-half top flap"><span class="digit-num">0</span></div>
+          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+        </div>
+      </div>
+
+      <!-- Colon Separator -->
+      <div class="clock-separator">:</div>
+
+      <!-- Minutes Group -->
+      <div class="digit-pair" id="minutes-group">
+        <div class="flip-unit" id="m0" data-digit="0">
+          <div class="card-half top static"><span class="digit-num">0</span></div>
+          <div class="card-half bottom static"><span class="digit-num">0</span></div>
+          <div class="card-half top flap"><span class="digit-num">0</span></div>
+          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+        </div>
+        <div class="flip-unit" id="m1" data-digit="0">
+          <div class="card-half top static"><span class="digit-num">0</span></div>
+          <div class="card-half bottom static"><span class="digit-num">0</span></div>
+          <div class="card-half top flap"><span class="digit-num">0</span></div>
+          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+        </div>
+      </div>
+
+      <!-- Colon Separator -->
+      <div class="clock-separator">:</div>
+
+      <!-- Seconds Group -->
+      <div class="digit-pair" id="seconds-group">
+        <div class="flip-unit" id="s0" data-digit="0">
+          <div class="card-half top static"><span class="digit-num">0</span></div>
+          <div class="card-half bottom static"><span class="digit-num">0</span></div>
+          <div class="card-half top flap"><span class="digit-num">0</span></div>
+          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+        </div>
+        <div class="flip-unit" id="s1" data-digit="0">
+          <div class="card-half top static"><span class="digit-num">0</span></div>
+          <div class="card-half bottom static"><span class="digit-num">0</span></div>
+          <div class="card-half top flap"><span class="digit-num">0</span></div>
+          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Screensaver HUD / Shortcut Bar (Fades out when mouse is idle) -->
+  <footer class="hud-bar" id="hud-bar">
+    <div class="hud-item" id="density-badge">Density: Medium [M]</div>
+    <div class="hud-separator">•</div>
+    <div class="hud-item" id="pause-badge">Live [Space]</div>
+    <div class="hud-separator">•</div>
+    <div class="hud-item" id="fullscreen-badge">Fullscreen [F]</div>
+  </footer>
+
+  <!-- Subtle Hint Banner on First Non-Kiosk Launch -->
+  <div class="kiosk-hint" id="kiosk-hint">
+    <span>Click anywhere or press <strong>F</strong> for fullscreen</span>
+  </div>
+
+  <script src="topography.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
