@@ -95,8 +95,23 @@
   /**
    * Synchronize clock against actual system time
    */
+  const dateText = document.getElementById('date-text');
+  let lastDay = null;
+
+  function updateDate(now) {
+    if (!dateText) return;
+    const day = now.getDate();
+    if (day !== lastDay) {
+      lastDay = day;
+      const options = { month: 'long', day: 'numeric', year: 'numeric' };
+      dateText.textContent = now.toLocaleDateString('en-US', options);
+    }
+  }
+
   function updateTime() {
     const now = new Date();
+    updateDate(now);
+
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');

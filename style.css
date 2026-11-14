@@ -5,18 +5,17 @@
 
 :root {
   --bg-color: #000000;
-  --card-bg: rgba(18, 18, 18, 0.92);
-  --card-border: rgba(255, 255, 255, 0.16);
-  --card-border-highlight: rgba(255, 255, 255, 0.3);
+  --card-bg: rgba(18, 18, 18, 0.94);
+  --card-border: rgba(255, 255, 255, 0.18);
+  --card-border-highlight: rgba(255, 255, 255, 0.35);
   --card-crease: #050505;
   --text-color: #ffffff;
-  --accent-dot: #ffffff;
   
-  /* Fluid responsive dimensions for clock */
-  --card-width: clamp(2.8rem, 8vw, 7.5rem);
-  --card-height: clamp(4.2rem, 12vw, 11rem);
-  --card-radius: clamp(5px, 0.8vw, 12px);
-  --font-size: clamp(2.8rem, 8.5vw, 7.8rem);
+  /* Much larger, prominently centered 24-hour flip clock */
+  --card-width: clamp(3.4rem, 9.6vw, 10.5rem);
+  --card-height: clamp(5.2rem, 14.6vw, 15.8rem);
+  --card-radius: clamp(6px, 1.1vw, 14px);
+  --font-size: clamp(3.6rem, 10.2vw, 11.2rem);
   
   --flip-duration: 480ms;
   --flip-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -61,7 +60,7 @@ body.cursor-hidden * {
 }
 
 /* ==========================================================================
-   Header & "hello rtoms" Badge
+   Header & Prominent Top-Left "hello rtoms" Title
    ========================================================================== */
 
 .header-container {
@@ -70,49 +69,37 @@ body.cursor-hidden * {
   left: 0;
   width: 100%;
   display: flex;
-  justify-content: flex-end;
-  padding: clamp(1.5rem, 3.2vw, 2.75rem);
+  justify-content: flex-start;
+  padding: clamp(2rem, 4vw, 4.5rem);
   pointer-events: none;
   z-index: 20;
 }
 
-.brand-badge {
+.site-title {
+  display: flex;
+  flex-direction: column;
   pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 18px;
-  border-radius: 9999px;
-  background: rgba(14, 14, 14, 0.72);
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: rgba(255, 255, 255, 0.88);
-  font-size: clamp(0.75rem, 1.1vw, 0.9rem);
-  font-weight: 500;
-  letter-spacing: 0.1em;
+}
+
+.title-subheading {
+  font-size: clamp(1.4rem, 2.5vw, 2.7rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: 0.06em;
   text-transform: lowercase;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
-  transition: opacity 0.4s ease, border-color 0.2s ease, transform 0.2s ease;
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
 }
 
-.brand-badge:hover {
-  border-color: var(--card-border-highlight);
-  transform: translateY(-1px);
-}
-
-.badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent-dot);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
-  animation: pulse-dot 3s infinite ease-in-out;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 0.4; transform: scale(0.9); }
-  50% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 12px rgba(255, 255, 255, 1); }
+.title-heading {
+  font-size: clamp(3.4rem, 6.4vw, 7rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+  line-height: 0.92;
+  margin-top: clamp(2px, 0.3vw, 6px);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.95);
 }
 
 /* ==========================================================================
@@ -130,38 +117,46 @@ body.cursor-hidden * {
   pointer-events: none;
 }
 
+.clock-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.2rem, 2.6vw, 3rem);
+}
+
 .clock-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.5rem, 1.5vw, 1.4rem);
+  gap: clamp(0.6rem, 1.8vw, 1.8rem);
   pointer-events: auto;
-  perspective: 1400px;
-  -webkit-perspective: 1400px;
+  perspective: 1600px;
+  -webkit-perspective: 1600px;
 }
 
 .digit-pair {
   display: flex;
-  gap: clamp(0.35rem, 0.7vw, 0.7rem);
+  gap: clamp(0.4rem, 0.8vw, 0.85rem);
 }
 
 .clock-separator {
-  font-size: calc(var(--font-size) * 0.7);
+  font-size: calc(var(--font-size) * 0.72);
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 clamp(0.2rem, 0.6vw, 0.7rem);
+  padding: 0 clamp(0.2rem, 0.6vw, 0.8rem);
   animation: colon-blink 2s infinite ease-in-out;
   transform: translateY(-5%);
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.5);
 }
 
 @keyframes colon-blink {
-  0%, 100% { opacity: 0.85; }
-  50% { opacity: 0.35; }
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.3; }
 }
 
 /* Flip Card Individual Digit Unit */
@@ -171,9 +166,9 @@ body.cursor-hidden * {
   height: var(--card-height);
   border-radius: var(--card-radius);
   background: var(--card-bg);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6);
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 4px 12px rgba(0, 0, 0, 0.7);
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
 }
 
 /* Side notch hinges for realistic mechanical clock aesthetic */
@@ -182,8 +177,8 @@ body.cursor-hidden * {
   content: "";
   position: absolute;
   top: 50%;
-  width: clamp(3px, 0.5vw, 6px);
-  height: clamp(4px, 0.7vw, 7px);
+  width: clamp(4px, 0.6vw, 7px);
+  height: clamp(5px, 0.8vw, 9px);
   background: #000000;
   border-radius: 2px;
   transform: translateY(-50%);
@@ -200,8 +195,8 @@ body.cursor-hidden * {
   height: 50%;
   overflow: hidden;
   background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "SF Pro Display", monospace;
   font-size: var(--font-size);
   font-weight: 700;
@@ -305,15 +300,15 @@ body.cursor-hidden * {
 
 @keyframes shadow-fade-in {
   0% { opacity: 0; }
-  100% { opacity: 0.8; }
+  100% { opacity: 0.85; }
 }
 
 @keyframes shadow-fade-out {
-  0% { opacity: 0.8; }
+  0% { opacity: 0.85; }
   100% { opacity: 0; }
 }
 
-/* Active Flipping State Classes (applied by JavaScript) */
+/* Active Flipping State Classes */
 .flip-unit.flipping .card-half.top.flap {
   animation: flip-top var(--flip-duration) var(--flip-timing) forwards;
 }
@@ -350,6 +345,33 @@ body.cursor-hidden * {
     transform: rotateX(0deg);
     z-index: 12;
   }
+}
+
+/* ==========================================================================
+   Clock Date Display (Month Date, Year)
+   ========================================================================== */
+
+.clock-date {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  padding: clamp(8px, 1vw, 12px) clamp(20px, 2.4vw, 36px);
+  border-radius: 9999px;
+  background: rgba(18, 18, 18, 0.88);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: clamp(0.95rem, 1.8vw, 1.6rem);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+  transition: border-color 0.2s ease;
+}
+
+.clock-date:hover {
+  border-color: var(--card-border-highlight);
 }
 
 /* ==========================================================================
@@ -438,9 +460,6 @@ body.cursor-hidden .hud-bar {
 @media (prefers-reduced-motion: reduce) {
   :root {
     --flip-duration: 0.01ms;
-  }
-  .badge-dot {
-    animation: none;
   }
   .clock-separator {
     animation: none;

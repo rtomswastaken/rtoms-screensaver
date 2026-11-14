@@ -1,7 +1,8 @@
 /**
  * rtoms-screensaver: Topography Engine
  * Lightweight, procedural 2D Canvas Marching Squares with 3D Simplex Noise.
- * Zero GC in hot loop, preallocated typed arrays, adaptive resolution, DPR scaling.
+ * Features a subtle cartographic grid, fine grid resolution for silky-smooth curves,
+ * soft luminescence/bloom, delta-time animation, and zero GC in hot loops.
  */
 
 class TopographyEngine {
@@ -12,34 +13,35 @@ class TopographyEngine {
     // Simplex Noise instance
     this.simplex = new SimplexNoise();
 
-    // Configuration
+    // Configuration - Tuned to match the reference video
     this.targetFps = 60;
-    this.speed = 0.00015; // Slow, hypnotic flow matching the reference video
-    this.spatialScale = 0.0016; // Terrain feature scale
+    this.speed = 0.000042; // Hypnotic, liquid-slow motion
+    this.spatialScale = 0.0011; // Broad, organic topographic hills
     this.isPaused = false;
     this.lastTime = performance.now();
     this.timeOffset = 0;
 
     // Density Presets (number of elevation iso-levels)
     this.densityPresets = {
-      low: [0.15, 0.3, 0.45, 0.6, 0.75, 0.9],
-      medium: [0.08, 0.16, 0.24, 0.32, 0.4, 0.48, 0.56, 0.64, 0.72, 0.8, 0.88, 0.96],
-      high: [
-        0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5,
-        0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95
-      ]
+      low: [0.28, 0.42, 0.56, 0.7],
+      medium: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+      high: [0.15, 0.22, 0.3, 0.37, 0.45, 0.52, 0.6, 0.67, 0.75, 0.82]
     };
     this.currentDensityName = 'medium';
     this.isoLevels = this.densityPresets[this.currentDensityName];
 
     // Grid & Memory Preallocation
-    this.baseCellSize = 16; // Grid cell size in CSS pixels
+    // Using 8px cells for ultra-fine, smooth contour curves
+    this.baseCellSize = 8;
     this.cellSize = this.baseCellSize;
     this.width = 0;
     this.height = 0;
     this.cols = 0;
     this.rows = 0;
     this.dpr = 1;
+
+    // Cartographic background grid
+    this.gridSpacing = 58; // Distance between grid lines in CSS px
 
     // Preallocated Typed Arrays
     this.noiseBuffer = null; // Float32Array for cell vertex heights
@@ -52,10 +54,12 @@ class TopographyEngine {
     // Motion preference
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Line style
-    this.lineWidth = 1.35;
-    this.lineColor = 'rgba(255, 255, 255, 0.85)';
-    this.accentLineColor = 'rgba(255, 255, 255, 0.95)';
+    // Visual styling
+    this.lineWidth = 1.75;
+    this.lineColor = 'rgba(255, 255, 255, 0.88)';
+    this.accentLineColor = 'rgba(255, 255, 255, 0.98)';
+    this.glowColor = 'rgba(255, 255, 255, 0.5)';
+    this.gridColor = 'rgba(255, 255, 255, 0.075)';
 
     this.initResizeObserver();
     this.resize();
@@ -70,7 +74,7 @@ class TopographyEngine {
 
   resize() {
     const rect = this.canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2.0); // Cap at 2.0 for kiosk efficiency
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.0);
     this.dpr = dpr;
 
     this.cssWidth = rect.width || window.innerWidth;
@@ -111,19 +115,17 @@ class TopographyEngine {
    * Main render loop driven by requestAnimationFrame
    */
   render(currentTime) {
-    const delta = Math.min(currentTime - this.lastTime, 100); // Clamp to prevent jump after background tab
+    const delta = Math.min(currentTime - this.lastTime, 100);
     this.lastTime = currentTime;
 
-    // Track frame performance for adaptive quality
+    // Monitor frame performance: gracefully adapt if GPU/CPU surges
     this.frameTimeHistory[this.historyIndex] = delta;
     this.historyIndex = (this.historyIndex + 1) % 30;
 
-    // Check if frame times are consistently exceeding 24ms (~40 FPS)
-    if (delta > 24) {
+    if (delta > 26) {
       this.consecutiveSlowFrames++;
-      if (this.consecutiveSlowFrames > 45 && this.cellSize < 28) {
-        // Step down quality gracefully
-        this.cellSize += 4;
+      if (this.consecutiveSlowFrames > 45 && this.cellSize < 16) {
+        this.cellSize += 2;
         this.resize();
         this.consecutiveSlowFrames = 0;
       }
@@ -131,7 +133,7 @@ class TopographyEngine {
       if (this.consecutiveSlowFrames > 0) this.consecutiveSlowFrames--;
     }
 
-    // Time advance
+    // Advance time smoothly
     if (!this.isPaused && !this.prefersReducedMotion) {
       this.timeOffset += delta * this.speed;
     }
@@ -140,6 +142,8 @@ class TopographyEngine {
     const dpr = this.dpr;
     const width = this.width;
     const height = this.height;
+    const cssW = this.cssWidth;
+    const cssH = this.cssHeight;
     const cols = this.cols;
     const rows = this.rows;
     const cellSize = this.cellSize;
@@ -148,12 +152,31 @@ class TopographyEngine {
     const scale = this.spatialScale;
     const t = this.timeOffset;
 
-    // 1. Clear background with pitch black
+    // 1. Clear with deep black
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, width, height);
 
-    // 2. Evaluate scalar height field into preallocated buffer
-    // Combining 2 octaves for organic natural topography ridges
+    ctx.save();
+    ctx.scale(dpr, dpr);
+
+    // 2. Draw subtle cartographic square grid
+    ctx.beginPath();
+    ctx.strokeStyle = this.gridColor;
+    ctx.lineWidth = 1;
+    ctx.shadowBlur = 0;
+
+    const spacing = this.gridSpacing;
+    for (let x = 0; x <= cssW; x += spacing) {
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, cssH);
+    }
+    for (let y = 0; y <= cssH; y += spacing) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(cssW, y);
+    }
+    ctx.stroke();
+
+    // 3. Evaluate noise height field into preallocated buffer
     let idx = 0;
     for (let r = 0; r < rows; r++) {
       const y = r * cellSize;
@@ -161,30 +184,29 @@ class TopographyEngine {
         const x = c * cellSize;
         // Primary broad elevation
         const n1 = simplex.noise3D(x * scale, y * scale, t);
-        // Finer organic detail
-        const n2 = simplex.noise3D(x * scale * 2.2 + 10.5, y * scale * 2.2 + 20.2, t * 1.3) * 0.35;
-        // Normalized into [0, 1] range
-        noiseBuffer[idx++] = (n1 + n2 + 1.35) * 0.37;
+        // Secondary soft harmonic
+        const n2 = simplex.noise3D(x * scale * 2.0 + 8.1, y * scale * 2.0 + 12.3, t * 1.2) * 0.32;
+        // Smooth normalization into [0, 1] range
+        noiseBuffer[idx++] = (n1 + n2 + 1.32) * 0.378;
       }
     }
 
-    // 3. Marching Squares line extraction & batch drawing
-    ctx.save();
-    ctx.scale(dpr, dpr);
-    ctx.lineWidth = this.lineWidth;
+    // 4. Marching Squares contour line extraction with soft glow
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
+    ctx.shadowColor = this.glowColor;
+    ctx.shadowBlur = 5;
 
     const levels = this.isoLevels;
     const numLevels = levels.length;
 
     for (let l = 0; l < numLevels; l++) {
       const iso = levels[l];
-      const isMajorLine = (l % 4 === 0);
+      const isMajorLine = (l % 3 === 0);
 
       ctx.beginPath();
       ctx.strokeStyle = isMajorLine ? this.accentLineColor : this.lineColor;
-      ctx.lineWidth = isMajorLine ? this.lineWidth * 1.4 : this.lineWidth;
+      ctx.lineWidth = isMajorLine ? this.lineWidth * 1.3 : this.lineWidth;
 
       for (let r = 0; r < rows - 1; r++) {
         const yTop = r * cellSize;
@@ -196,70 +218,63 @@ class TopographyEngine {
           const xLeft = c * cellSize;
           const xRight = xLeft + cellSize;
 
-          // Corner scalar values
           const vTL = noiseBuffer[rowOffset + c];
           const vTR = noiseBuffer[rowOffset + c + 1];
           const vBR = noiseBuffer[nextRowOffset + c + 1];
           const vBL = noiseBuffer[nextRowOffset + c];
 
-          // 4-bit classification
           let cellCase = 0;
           if (vTL >= iso) cellCase |= 8;
           if (vTR >= iso) cellCase |= 4;
           if (vBR >= iso) cellCase |= 2;
           if (vBL >= iso) cellCase |= 1;
 
-          // If all inside or all outside, no isoline
           if (cellCase === 0 || cellCase === 15) continue;
 
-          // Linear interpolation for exact edge crossing
-          // Top edge (vTL -> vTR)
+          // Interpolated edge crossings
           const topX = xLeft + (iso - vTL) / (vTR - vTL || 0.0001) * cellSize;
-          // Right edge (vTR -> vBR)
           const rightY = yTop + (iso - vTR) / (vBR - vTR || 0.0001) * cellSize;
-          // Bottom edge (vBL -> vBR)
           const bottomX = xLeft + (iso - vBL) / (vBR - vBL || 0.0001) * cellSize;
-          // Left edge (vTL -> vBL)
           const leftY = yTop + (iso - vTL) / (vBL - vTL || 0.0001) * cellSize;
 
           switch (cellCase) {
-            case 1: // BL
+            case 1:
             case 14:
               ctx.moveTo(xLeft, leftY);
               ctx.lineTo(bottomX, yBottom);
               break;
-            case 2: // BR
+            case 2:
             case 13:
               ctx.moveTo(bottomX, yBottom);
               ctx.lineTo(xRight, rightY);
               break;
-            case 3: // BL & BR (bottom horizontal-ish)
+            case 3:
             case 12:
               ctx.moveTo(xLeft, leftY);
               ctx.lineTo(xRight, rightY);
               break;
-            case 4: // TR
+            case 4:
             case 11:
               ctx.moveTo(topX, yTop);
               ctx.lineTo(xRight, rightY);
               break;
-            case 5: // Saddle: BL & TR
+            case 5:
               ctx.moveTo(xLeft, leftY);
               ctx.lineTo(topX, yTop);
               ctx.moveTo(bottomX, yBottom);
               ctx.lineTo(xRight, rightY);
               break;
-            case 6: // TR & BR (right vertical-ish)
+            case 6:
             case 9:
               ctx.moveTo(topX, yTop);
               ctx.lineTo(bottomX, yBottom);
               break;
-            case 7: // Not TL
-            case 8: // Only TL
+            case 7:
+            case 8:
               ctx.moveTo(xLeft, leftY);
               ctx.lineTo(topX, yTop);
               break;
-            case 10: // Saddle: TL & BR
+            case 10:
               ctx.moveTo(xLeft, leftY);
               ctx.lineTo(bottomX, yBottom);
               ctx.moveTo(topX, yTop);
@@ -277,7 +292,6 @@ class TopographyEngine {
 
 /**
  * Self-contained 3D Simplex Noise
- * Fast, zero-allocation per sample evaluation.
  */
 class SimplexNoise {
   constructor(seed = 42) {
@@ -285,12 +299,10 @@ class SimplexNoise {
     this.perm = new Uint8Array(512);
     this.permMod12 = new Uint8Array(512);
 
-    // Initial permutation table
     for (let i = 0; i < 256; i++) {
       this.p[i] = i;
     }
 
-    // Seeded shuffle
     let s = seed;
     for (let i = 255; i > 0; i--) {
       s = (s * 16807) % 2147483647;
@@ -305,7 +317,6 @@ class SimplexNoise {
       this.permMod12[i] = this.perm[i] % 12;
     }
 
-    // Precalculated gradients for 3D
     this.grad3 = new Float32Array([
       1, 1, 0,  -1, 1, 0,  1, -1, 0,  -1, -1, 0,
       1, 0, 1,  -1, 0, 1,  1, 0, -1,  -1, 0, -1,
@@ -413,5 +424,4 @@ class SimplexNoise {
   }
 }
 
-// Export for app.js
 window.TopographyEngine = TopographyEngine;

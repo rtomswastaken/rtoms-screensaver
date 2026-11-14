@@ -12,69 +12,76 @@
   <!-- Topography Canvas Background -->
   <canvas id="bg-canvas"></canvas>
 
-  <!-- Top-Right Brand Badge -->
+  <!-- Top-Left Prominent Title Header -->
   <header class="header-container">
-    <div class="brand-badge" id="brand-badge">
-      <span class="badge-dot"></span>
-      <span class="badge-text">hello rtoms</span>
+    <div class="site-title" id="site-title">
+      <span class="title-subheading">hello</span>
+      <h1 class="title-heading">rtoms</h1>
     </div>
   </header>
 
-  <!-- Main Centered Flip Clock -->
+  <!-- Main Centered Flip Clock & Date -->
   <main class="clock-stage">
-    <div class="clock-container" id="flip-clock" aria-label="24-hour flip clock">
-      <!-- Hours Group -->
-      <div class="digit-pair" id="hours-group">
-        <div class="flip-unit" id="h0" data-digit="0">
-          <div class="card-half top static"><span class="digit-num">0</span></div>
-          <div class="card-half bottom static"><span class="digit-num">0</span></div>
-          <div class="card-half top flap"><span class="digit-num">0</span></div>
-          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+    <div class="clock-wrapper">
+      <div class="clock-container" id="flip-clock" aria-label="24-hour flip clock">
+        <!-- Hours Group -->
+        <div class="digit-pair" id="hours-group">
+          <div class="flip-unit" id="h0" data-digit="0">
+            <div class="card-half top static"><span class="digit-num">0</span></div>
+            <div class="card-half bottom static"><span class="digit-num">0</span></div>
+            <div class="card-half top flap"><span class="digit-num">0</span></div>
+            <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+          </div>
+          <div class="flip-unit" id="h1" data-digit="0">
+            <div class="card-half top static"><span class="digit-num">0</span></div>
+            <div class="card-half bottom static"><span class="digit-num">0</span></div>
+            <div class="card-half top flap"><span class="digit-num">0</span></div>
+            <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+          </div>
         </div>
-        <div class="flip-unit" id="h1" data-digit="0">
-          <div class="card-half top static"><span class="digit-num">0</span></div>
-          <div class="card-half bottom static"><span class="digit-num">0</span></div>
-          <div class="card-half top flap"><span class="digit-num">0</span></div>
-          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+
+        <!-- Colon Separator -->
+        <div class="clock-separator">:</div>
+
+        <!-- Minutes Group -->
+        <div class="digit-pair" id="minutes-group">
+          <div class="flip-unit" id="m0" data-digit="0">
+            <div class="card-half top static"><span class="digit-num">0</span></div>
+            <div class="card-half bottom static"><span class="digit-num">0</span></div>
+            <div class="card-half top flap"><span class="digit-num">0</span></div>
+            <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+          </div>
+          <div class="flip-unit" id="m1" data-digit="0">
+            <div class="card-half top static"><span class="digit-num">0</span></div>
+            <div class="card-half bottom static"><span class="digit-num">0</span></div>
+            <div class="card-half top flap"><span class="digit-num">0</span></div>
+            <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+          </div>
+        </div>
+
+        <!-- Colon Separator -->
+        <div class="clock-separator">:</div>
+
+        <!-- Seconds Group -->
+        <div class="digit-pair" id="seconds-group">
+          <div class="flip-unit" id="s0" data-digit="0">
+            <div class="card-half top static"><span class="digit-num">0</span></div>
+            <div class="card-half bottom static"><span class="digit-num">0</span></div>
+            <div class="card-half top flap"><span class="digit-num">0</span></div>
+            <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+          </div>
+          <div class="flip-unit" id="s1" data-digit="0">
+            <div class="card-half top static"><span class="digit-num">0</span></div>
+            <div class="card-half bottom static"><span class="digit-num">0</span></div>
+            <div class="card-half top flap"><span class="digit-num">0</span></div>
+            <div class="card-half bottom flap"><span class="digit-num">0</span></div>
+          </div>
         </div>
       </div>
 
-      <!-- Colon Separator -->
-      <div class="clock-separator">:</div>
-
-      <!-- Minutes Group -->
-      <div class="digit-pair" id="minutes-group">
-        <div class="flip-unit" id="m0" data-digit="0">
-          <div class="card-half top static"><span class="digit-num">0</span></div>
-          <div class="card-half bottom static"><span class="digit-num">0</span></div>
-          <div class="card-half top flap"><span class="digit-num">0</span></div>
-          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
-        </div>
-        <div class="flip-unit" id="m1" data-digit="0">
-          <div class="card-half top static"><span class="digit-num">0</span></div>
-          <div class="card-half bottom static"><span class="digit-num">0</span></div>
-          <div class="card-half top flap"><span class="digit-num">0</span></div>
-          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
-        </div>
-      </div>
-
-      <!-- Colon Separator -->
-      <div class="clock-separator">:</div>
-
-      <!-- Seconds Group -->
-      <div class="digit-pair" id="seconds-group">
-        <div class="flip-unit" id="s0" data-digit="0">
-          <div class="card-half top static"><span class="digit-num">0</span></div>
-          <div class="card-half bottom static"><span class="digit-num">0</span></div>
-          <div class="card-half top flap"><span class="digit-num">0</span></div>
-          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
-        </div>
-        <div class="flip-unit" id="s1" data-digit="0">
-          <div class="card-half top static"><span class="digit-num">0</span></div>
-          <div class="card-half bottom static"><span class="digit-num">0</span></div>
-          <div class="card-half top flap"><span class="digit-num">0</span></div>
-          <div class="card-half bottom flap"><span class="digit-num">0</span></div>
-        </div>
+      <!-- Current Date in Month Date and Year format -->
+      <div class="clock-date" id="clock-date">
+        <span class="date-text" id="date-text">November 14, 2026</span>
       </div>
     </div>
   </main>
