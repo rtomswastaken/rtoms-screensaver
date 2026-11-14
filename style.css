@@ -1,6 +1,6 @@
 /* ==========================================================================
    rtoms-screensaver: Core Styles
-   Monochrome, modern typography, 3D mechanical flip clock physics.
+   Monochrome, Themes (Warm, Dark Green, RGB Gamer), 3D mechanical flip clock.
    ========================================================================== */
 
 :root {
@@ -10,15 +10,108 @@
   --card-border-highlight: rgba(255, 255, 255, 0.35);
   --card-crease: #050505;
   --text-color: #ffffff;
+  --separator-color: rgba(255, 255, 255, 0.85);
+  --date-border: rgba(255, 255, 255, 0.18);
+  --date-color: rgba(255, 255, 255, 0.85);
+  --subheading-color: rgba(255, 255, 255, 0.82);
   
-  /* Much larger, prominently centered 24-hour flip clock */
-  --card-width: clamp(3.4rem, 9.6vw, 10.5rem);
-  --card-height: clamp(5.2rem, 14.6vw, 15.8rem);
-  --card-radius: clamp(6px, 1.1vw, 14px);
-  --font-size: clamp(3.6rem, 10.2vw, 11.2rem);
+  /* Even larger, prominently centered 24-hour flip clock */
+  --card-width: clamp(3.8rem, 10.6vw, 12rem);
+  --card-height: clamp(5.8rem, 16.2vw, 18rem);
+  --card-radius: clamp(8px, 1.3vw, 16px);
+  --font-size: clamp(4.2rem, 11.6vw, 13rem);
   
   --flip-duration: 480ms;
   --flip-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Themes
+   ========================================================================== */
+
+/* 1. Warmer Tone */
+body[data-theme="warm"] {
+  --bg-color: #0d0905;
+  --card-bg: rgba(26, 18, 12, 0.94);
+  --card-border: rgba(255, 180, 85, 0.26);
+  --card-border-highlight: rgba(255, 210, 120, 0.55);
+  --card-crease: #070402;
+  --text-color: #fff6ee;
+  --separator-color: rgba(255, 205, 125, 0.92);
+  --date-border: rgba(255, 180, 85, 0.26);
+  --date-color: rgba(255, 215, 140, 0.95);
+  --subheading-color: rgba(255, 200, 120, 0.88);
+}
+
+/* 2. Dark Green with Lighter Green Shades */
+body[data-theme="darkgreen"] {
+  --bg-color: #030d06;
+  --card-bg: rgba(8, 26, 14, 0.94);
+  --card-border: rgba(70, 235, 125, 0.28);
+  --card-border-highlight: rgba(140, 255, 180, 0.6);
+  --card-crease: #020703;
+  --text-color: #ebffef;
+  --separator-color: rgba(90, 250, 145, 0.92);
+  --date-border: rgba(70, 235, 125, 0.28);
+  --date-color: rgba(110, 255, 165, 0.95);
+  --subheading-color: rgba(85, 240, 140, 0.88);
+}
+
+/* 3. Black & White Monochrome */
+body[data-theme="monochrome"] {
+  --bg-color: #000000;
+  --card-bg: rgba(18, 18, 18, 0.94);
+  --card-border: rgba(255, 255, 255, 0.18);
+  --card-border-highlight: rgba(255, 255, 255, 0.35);
+  --card-crease: #050505;
+  --text-color: #ffffff;
+  --separator-color: rgba(255, 255, 255, 0.85);
+  --date-border: rgba(255, 255, 255, 0.18);
+  --date-color: rgba(255, 255, 255, 0.85);
+  --subheading-color: rgba(255, 255, 255, 0.82);
+}
+
+/* 4. RGB Gamer Mode */
+body[data-theme="rgb"] {
+  --bg-color: #050408;
+  --card-bg: rgba(16, 14, 22, 0.94);
+  --card-border: rgba(255, 0, 128, 0.4);
+  --card-border-highlight: rgba(0, 255, 200, 0.7);
+  --card-crease: #030206;
+  --text-color: #ffffff;
+  --separator-color: #00ffcc;
+  --date-border: rgba(0, 255, 200, 0.4);
+  --date-color: #ffffff;
+  --subheading-color: #ff007f;
+}
+
+body[data-theme="rgb"] .title-heading {
+  background: linear-gradient(90deg, #ff007f, #00dfd8, #7928ca, #ff007f);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rgb-text 4s linear infinite;
+  text-shadow: none;
+}
+
+body[data-theme="rgb"] .flip-unit {
+  animation: rgb-border 5s linear infinite;
+}
+
+body[data-theme="rgb"] .clock-date {
+  animation: rgb-border 5s linear infinite;
+}
+
+@keyframes rgb-text {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+@keyframes rgb-border {
+  0% { border-color: #ff007f; box-shadow: 0 0 25px rgba(255, 0, 127, 0.35); }
+  33% { border-color: #00dfd8; box-shadow: 0 0 25px rgba(0, 223, 216, 0.35); }
+  66% { border-color: #7928ca; box-shadow: 0 0 25px rgba(121, 40, 202, 0.35); }
+  100% { border-color: #ff007f; box-shadow: 0 0 25px rgba(255, 0, 127, 0.35); }
 }
 
 *, *::before, *::after {
@@ -38,6 +131,7 @@ html, body {
   -webkit-user-select: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.5s ease;
 }
 
 /* Screensaver idle cursor hiding */
@@ -82,24 +176,26 @@ body.cursor-hidden * {
 }
 
 .title-subheading {
-  font-size: clamp(1.4rem, 2.5vw, 2.7rem);
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.72);
-  letter-spacing: 0.06em;
+  font-size: clamp(1.8rem, 3.4vw, 3.8rem);
+  font-weight: 700;
+  color: var(--subheading-color);
+  letter-spacing: 0.04em;
   text-transform: lowercase;
-  line-height: 1.1;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+  line-height: 1;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
+  transition: color 0.4s ease;
 }
 
 .title-heading {
-  font-size: clamp(3.4rem, 6.4vw, 7rem);
-  font-weight: 800;
+  font-size: clamp(4.6rem, 10.8vw, 12rem);
+  font-weight: 900;
   color: #ffffff;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   text-transform: lowercase;
-  line-height: 0.92;
-  margin-top: clamp(2px, 0.3vw, 6px);
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.95);
+  line-height: 0.85;
+  margin-top: clamp(2px, 0.4vw, 8px);
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.98);
+  transition: color 0.4s ease;
 }
 
 /* ==========================================================================
@@ -122,28 +218,28 @@ body.cursor-hidden * {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(1.2rem, 2.6vw, 3rem);
+  gap: clamp(1.4rem, 3vw, 3.4rem);
 }
 
 .clock-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.6rem, 1.8vw, 1.8rem);
+  gap: clamp(0.7rem, 2vw, 2.2rem);
   pointer-events: auto;
-  perspective: 1600px;
-  -webkit-perspective: 1600px;
+  perspective: 1800px;
+  -webkit-perspective: 1800px;
 }
 
 .digit-pair {
   display: flex;
-  gap: clamp(0.4rem, 0.8vw, 0.85rem);
+  gap: clamp(0.45rem, 0.9vw, 1rem);
 }
 
 .clock-separator {
   font-size: calc(var(--font-size) * 0.72);
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--separator-color);
   line-height: 1;
   display: flex;
   align-items: center;
@@ -151,7 +247,8 @@ body.cursor-hidden * {
   padding: 0 clamp(0.2rem, 0.6vw, 0.8rem);
   animation: colon-blink 2s infinite ease-in-out;
   transform: translateY(-5%);
-  text-shadow: 0 0 14px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
+  transition: color 0.4s ease;
 }
 
 @keyframes colon-blink {
@@ -166,9 +263,11 @@ body.cursor-hidden * {
   height: var(--card-height);
   border-radius: var(--card-radius);
   background: var(--card-bg);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 4px 12px rgba(0, 0, 0, 0.7);
-  perspective: 1200px;
-  -webkit-perspective: 1200px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.88), 0 4px 14px rgba(0, 0, 0, 0.7);
+  perspective: 1400px;
+  -webkit-perspective: 1400px;
+  border: 1px solid var(--card-border);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 /* Side notch hinges for realistic mechanical clock aesthetic */
@@ -177,9 +276,9 @@ body.cursor-hidden * {
   content: "";
   position: absolute;
   top: 50%;
-  width: clamp(4px, 0.6vw, 7px);
-  height: clamp(5px, 0.8vw, 9px);
-  background: #000000;
+  width: clamp(4px, 0.7vw, 8px);
+  height: clamp(6px, 0.9vw, 11px);
+  background: var(--card-crease);
   border-radius: 2px;
   transform: translateY(-50%);
   z-index: 30;
@@ -204,6 +303,7 @@ body.cursor-hidden * {
   font-variant-numeric: tabular-nums;
   -webkit-font-variant-numeric: tabular-nums;
   box-sizing: border-box;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Top half properties */
@@ -211,7 +311,6 @@ body.cursor-hidden * {
   top: 0;
   border-top-left-radius: var(--card-radius);
   border-top-right-radius: var(--card-radius);
-  border: 1px solid var(--card-border);
   border-bottom: 1px solid var(--card-crease);
   transform-origin: bottom center;
 }
@@ -233,7 +332,6 @@ body.cursor-hidden * {
   bottom: 0;
   border-bottom-left-radius: var(--card-radius);
   border-bottom-right-radius: var(--card-radius);
-  border: 1px solid var(--card-border);
   border-top: 1px solid var(--card-crease);
   transform-origin: top center;
 }
@@ -355,49 +453,53 @@ body.cursor-hidden * {
   pointer-events: auto;
   display: inline-flex;
   align-items: center;
-  padding: clamp(8px, 1vw, 12px) clamp(20px, 2.4vw, 36px);
+  padding: clamp(9px, 1.1vw, 14px) clamp(22px, 2.6vw, 40px);
   border-radius: 9999px;
-  background: rgba(18, 18, 18, 0.88);
-  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  border: 1px solid var(--date-border);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  font-size: clamp(0.95rem, 1.8vw, 1.6rem);
+  font-size: clamp(1.05rem, 2vw, 1.85rem);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
-  transition: border-color 0.2s ease;
-}
-
-.clock-date:hover {
-  border-color: var(--card-border-highlight);
+  color: var(--date-color);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.68);
+  transition: border-color 0.4s ease, color 0.4s ease, background-color 0.4s ease;
 }
 
 /* ==========================================================================
-   HUD & Keyboard Status Bar (Bottom Center)
+   HUD & Keyboard Status Bar (Shows ONLY when cursor moves to bottom)
    ========================================================================== */
 
 .hud-bar {
   position: fixed;
   bottom: clamp(1.2rem, 2.5vw, 2.2rem);
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, 25px);
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 6px 18px;
+  padding: 8px 22px;
   border-radius: 9999px;
-  background: rgba(14, 14, 14, 0.65);
+  background: rgba(14, 14, 14, 0.78);
   border: 1px solid var(--card-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  font-size: 0.76rem;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.6);
-  z-index: 20;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.75);
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Revealed only when cursor approaches the bottom of the screen */
+.hud-bar.visible {
+  opacity: 1;
   pointer-events: auto;
+  transform: translate(-50%, 0);
 }
 
 .hud-item {
@@ -406,18 +508,12 @@ body.cursor-hidden * {
 }
 
 .hud-item:hover {
-  color: rgba(255, 255, 255, 0.95);
+  color: #ffffff;
 }
 
 .hud-separator {
   color: rgba(255, 255, 255, 0.25);
   font-size: 0.6rem;
-}
-
-body.cursor-hidden .hud-bar {
-  opacity: 0;
-  transform: translate(-50%, 10px);
-  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -426,7 +522,7 @@ body.cursor-hidden .hud-bar {
 
 .kiosk-hint {
   position: fixed;
-  bottom: clamp(4rem, 6vw, 5.5rem);
+  bottom: clamp(4.5rem, 6.5vw, 6rem);
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 20px;

@@ -1,7 +1,7 @@
 /**
  * rtoms-screensaver: Main Application Controller
  * Handles 24-hour flip clock mechanical transitions, system synchronization,
- * Wake Lock, fullscreen management, and user interaction.
+ * Wake Lock, fullscreen management, bottom-edge HUD, and Theme switcher (T key).
  */
 
 (function () {
@@ -35,7 +35,6 @@
     { id: 's1', el: document.getElementById('s1'), val: null }
   ];
 
-  // Cache sub-elements per digit unit for zero DOM queries during updates
   digitUnits.forEach((unit) => {
     if (!unit.el) return;
     unit.topStatic = unit.el.querySelector('.card-half.top.static .digit-num');
@@ -61,15 +60,10 @@
     if (prevVal === nextVal) return;
     unit.val = nextVal;
 
-    // Avoid stacking animation bugs if rapid trigger occurs
     unit.el.classList.remove('flipping');
     void unit.el.offsetWidth; // Force CSS reflow
 
-    // Setup faces for flip physics:
-    // - Top static: shows incoming NEXT digit (revealed when top flap folds down)
-    // - Bottom static: shows CURRENT digit (covered when bottom flap snaps down)
-    // - Top flap: shows CURRENT digit (folds forward and down)
-    // - Bottom flap: shows incoming NEXT digit (folds down onto bottom)
+    // Setup faces for flip physics
     unit.topStatic.textContent = nextVal;
     unit.bottomStatic.textContent = prevVal;
     unit.topFlap.textContent = prevVal;
@@ -77,7 +71,6 @@
 
     unit.el.classList.add('flipping');
 
-    // Clean up animation state after flip duration
     setTimeout(() => {
       unit.bottomStatic.textContent = nextVal;
       unit.topFlap.textContent = nextVal;
@@ -93,7 +86,7 @@
   }
 
   /**
-   * Synchronize clock against actual system time
+   * Synchronize clock against actual system time & Date
    */
   const dateText = document.getElementById('date-text');
   let lastDay = null;
@@ -131,20 +124,17 @@
 
   /**
    * System time synchronization loop
-   * Recursively schedules tick at exact millisecond boundaries to prevent drift
    */
   let timerId = null;
   function scheduleNextTick() {
     updateTime();
     const now = Date.now();
-    const delay = 1000 - (now % 1000) + 1; // Align with the next second boundary
+    const delay = 1000 - (now % 1000) + 1;
     timerId = setTimeout(scheduleNextTick, delay);
   }
 
-  // Initial boot
   scheduleNextTick();
 
-  // Re-synchronize when page visibility changes (e.g. laptop wake or tab switch)
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
       if (timerId) clearTimeout(timerId);
@@ -154,7 +144,34 @@
   });
 
   // ==========================================================================
-  // 3. Screen Wake Lock API (Keep display on during screensaver operation)
+  // 3. Theme Engine (T Key: Warm -> Dark Green -> B&W -> RGB Gamer Mode)
+  // ==========================================================================
+  const themes = [
+    { id: 'warm', name: 'Warm' },
+    { id: 'darkgreen', name: 'Emerald' },
+    { id: 'monochrome', name: 'B&W' },
+    { id: 'rgb', name: 'RGB Gamer' }
+  ];
+  let currentThemeIndex = -1; // Next press triggers themes[0] ('warm')
+  const themeBadge = document.getElementById('theme-badge');
+
+  function applyTheme(themeObj) {
+    document.body.setAttribute('data-theme', themeObj.id);
+    if (topography) {
+      topography.setTheme(themeObj.id);
+    }
+    if (themeBadge) {
+      themeBadge.textContent = `Theme: ${themeObj.name} [T]`;
+    }
+  }
+
+  function cycleTheme() {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    applyTheme(themes[currentThemeIndex]);
+  }
+
+  // ==========================================================================
+  // 4. Screen Wake Lock API
   // ==========================================================================
   let wakeLock = null;
 
@@ -165,21 +182,20 @@
         wakeLock.addEventListener('release', () => {
           wakeLock = null;
         });
-      } catch (err) {
-        // Gracefully ignore wake lock errors on unsupported devices or power saver
-      }
+      } catch (err) {}
     }
   }
 
   acquireWakeLock();
 
   // ==========================================================================
-  // 4. Fullscreen & Interaction Handling
+  // 5. Fullscreen & Interaction Handling
   // ==========================================================================
   const kioskHint = document.getElementById('kiosk-hint');
   const fullscreenBadge = document.getElementById('fullscreen-badge');
   const pauseBadge = document.getElementById('pause-badge');
   const densityBadge = document.getElementById('density-badge');
+  const hudBar = document.getElementById('hud-bar');
 
   function isFullscreen() {
     return Boolean(
@@ -240,38 +256,58 @@
   window.addEventListener('click', handleFirstInteraction, { once: true });
   window.addEventListener('touchstart', handleFirstInteraction, { once: true });
 
-  // Hide initial hint automatically after 6 seconds even if not clicked
   setTimeout(() => {
     if (kioskHint) kioskHint.classList.add('hidden');
   }, 6000);
 
   // ==========================================================================
-  // 5. Idle Cursor Hiding (Crucial for Screensavers / Kiosk Displays)
+  // 6. Bottom-Edge HUD Trigger & Idle Cursor Hiding
   // ==========================================================================
   let idleTimeout = null;
+  const BOTTOM_ZONE_PX = 95; // Cursor must be within 95px of the bottom edge
 
-  function showCursor() {
+  function handleMouseMove(e) {
     document.body.classList.remove('cursor-hidden');
     clearTimeout(idleTimeout);
+
+    // Only display HUD if cursor is near bottom of the viewport
+    const isAtBottom = e.clientY >= (window.innerHeight - BOTTOM_ZONE_PX);
+    if (isAtBottom) {
+      if (hudBar) hudBar.classList.add('visible');
+    } else {
+      if (hudBar) hudBar.classList.remove('visible');
+    }
+
+    // Auto-hide cursor after 2.8s of inactivity
     idleTimeout = setTimeout(() => {
       document.body.classList.add('cursor-hidden');
+      if (hudBar) hudBar.classList.remove('visible');
     }, 2800);
   }
 
-  window.addEventListener('mousemove', showCursor);
-  window.addEventListener('mousedown', showCursor);
-  window.addEventListener('keydown', showCursor);
-  showCursor();
+  window.addEventListener('mousemove', handleMouseMove);
+  window.addEventListener('mousedown', () => {
+    document.body.classList.remove('cursor-hidden');
+  });
+
+  if (hudBar) {
+    hudBar.addEventListener('mouseenter', () => {
+      hudBar.classList.add('visible');
+    });
+  }
 
   // ==========================================================================
-  // 6. Keyboard Shortcuts & Controls
+  // 7. Keyboard Shortcuts & Controls
   // ==========================================================================
   window.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
     const key = e.key.toLowerCase();
 
-    if (key === 'f') {
+    if (key === 't') {
+      e.preventDefault();
+      cycleTheme();
+    } else if (key === 'f') {
       e.preventDefault();
       toggleFullscreen();
     } else if (key === ' ' || e.code === 'Space') {
@@ -295,6 +331,9 @@
   });
 
   // HUD Bar Click Handlers
+  if (themeBadge) {
+    themeBadge.addEventListener('click', cycleTheme);
+  }
   if (fullscreenBadge) {
     fullscreenBadge.addEventListener('click', toggleFullscreen);
   }

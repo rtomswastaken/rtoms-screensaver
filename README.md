@@ -27,11 +27,14 @@ Built with pure, zero-dependency modern web standards (HTML5 Canvas 2D, CSS 3D t
 
 | Key | Action |
 | :--- | :--- |
+| **`T`** | Cycle themes (**Warm** ➔ **Dark Green** ➔ **Monochrome B&W** ➔ **RGB Gamer**) |
 | **`F`** | Toggle Fullscreen mode |
 | **`Space`** | Pause / Resume topographic contour animation |
 | **`M`** | Cycle contour density (**Low** ➔ **Medium** ➔ **High**) |
 | **`Alt + F4`** | Exit Kiosk mode (Windows) |
 | **`Esc`** | Exit Fullscreen (Standard browser mode) |
+
+> **Note**: The bottom HUD menu is completely hidden during screensaver operation to keep the display clean, and reveals automatically whenever you move your cursor to the bottom edge of the screen.
 
 ---
 

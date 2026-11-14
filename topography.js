@@ -1,8 +1,11 @@
 /**
  * rtoms-screensaver: Topography Engine
  * Lightweight, procedural 2D Canvas Marching Squares with 3D Simplex Noise.
- * Features a subtle cartographic grid, fine grid resolution for silky-smooth curves,
- * soft luminescence/bloom, delta-time animation, and zero GC in hot loops.
+ * Features:
+ * - Denser, rich isocontour waves
+ * - Theme Support: Monochrome B&W, Warm Amber, Dark Green, Dynamic RGB Gamer Mode
+ * - Subtle cartographic grid with soft luminescence bloom
+ * - Preallocated typed arrays for zero GC in hot animation loop
  */
 
 class TopographyEngine {
@@ -13,25 +16,34 @@ class TopographyEngine {
     // Simplex Noise instance
     this.simplex = new SimplexNoise();
 
-    // Configuration - Tuned to match the reference video
+    // Configuration
     this.targetFps = 60;
-    this.speed = 0.000042; // Hypnotic, liquid-slow motion
-    this.spatialScale = 0.0011; // Broad, organic topographic hills
+    this.speed = 0.000038; // Hypnotic, liquid-smooth evolution
+    this.spatialScale = 0.0013; // Rich natural terrain feature scale
     this.isPaused = false;
     this.lastTime = performance.now();
     this.timeOffset = 0;
 
-    // Density Presets (number of elevation iso-levels)
+    // Themes
+    this.themeNames = ['monochrome', 'warm', 'darkgreen', 'rgb'];
+    this.currentTheme = document.body ? (document.body.getAttribute('data-theme') || 'monochrome') : 'monochrome';
+
+    // Denser Density Presets
     this.densityPresets = {
-      low: [0.28, 0.42, 0.56, 0.7],
-      medium: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
-      high: [0.15, 0.22, 0.3, 0.37, 0.45, 0.52, 0.6, 0.67, 0.75, 0.82]
+      low: [0.18, 0.26, 0.34, 0.42, 0.5, 0.58, 0.66, 0.74, 0.82, 0.9],
+      medium: [
+        0.12, 0.17, 0.22, 0.27, 0.32, 0.37, 0.42, 0.47,
+        0.52, 0.57, 0.62, 0.67, 0.72, 0.77, 0.82, 0.87
+      ],
+      high: [
+        0.08, 0.12, 0.16, 0.2, 0.24, 0.28, 0.32, 0.36, 0.4, 0.44,
+        0.48, 0.52, 0.56, 0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.84, 0.88, 0.92
+      ]
     };
     this.currentDensityName = 'medium';
     this.isoLevels = this.densityPresets[this.currentDensityName];
 
-    // Grid & Memory Preallocation
-    // Using 8px cells for ultra-fine, smooth contour curves
+    // Grid: 8px cells for silky-smooth continuous curves
     this.baseCellSize = 8;
     this.cellSize = this.baseCellSize;
     this.width = 0;
@@ -41,10 +53,10 @@ class TopographyEngine {
     this.dpr = 1;
 
     // Cartographic background grid
-    this.gridSpacing = 58; // Distance between grid lines in CSS px
+    this.gridSpacing = 56;
 
     // Preallocated Typed Arrays
-    this.noiseBuffer = null; // Float32Array for cell vertex heights
+    this.noiseBuffer = null;
 
     // Adaptive Performance Monitor
     this.frameTimeHistory = new Float32Array(30);
@@ -54,15 +66,17 @@ class TopographyEngine {
     // Motion preference
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Visual styling
-    this.lineWidth = 1.75;
-    this.lineColor = 'rgba(255, 255, 255, 0.88)';
-    this.accentLineColor = 'rgba(255, 255, 255, 0.98)';
-    this.glowColor = 'rgba(255, 255, 255, 0.5)';
-    this.gridColor = 'rgba(255, 255, 255, 0.075)';
+    // Visual styles per theme
+    this.lineWidth = 1.7;
 
     this.initResizeObserver();
     this.resize();
+  }
+
+  setTheme(themeName) {
+    if (this.themeNames.includes(themeName)) {
+      this.currentTheme = themeName;
+    }
   }
 
   initResizeObserver() {
@@ -88,7 +102,6 @@ class TopographyEngine {
       this.canvas.height = this.height;
     }
 
-    // Grid dimension calculation
     this.cols = Math.ceil(this.cssWidth / this.cellSize) + 1;
     this.rows = Math.ceil(this.cssHeight / this.cellSize) + 1;
 
@@ -118,7 +131,6 @@ class TopographyEngine {
     const delta = Math.min(currentTime - this.lastTime, 100);
     this.lastTime = currentTime;
 
-    // Monitor frame performance: gracefully adapt if GPU/CPU surges
     this.frameTimeHistory[this.historyIndex] = delta;
     this.historyIndex = (this.historyIndex + 1) % 30;
 
@@ -133,7 +145,6 @@ class TopographyEngine {
       if (this.consecutiveSlowFrames > 0) this.consecutiveSlowFrames--;
     }
 
-    // Advance time smoothly
     if (!this.isPaused && !this.prefersReducedMotion) {
       this.timeOffset += delta * this.speed;
     }
@@ -151,17 +162,43 @@ class TopographyEngine {
     const simplex = this.simplex;
     const scale = this.spatialScale;
     const t = this.timeOffset;
+    const theme = this.currentTheme;
 
-    // 1. Clear with deep black
-    ctx.fillStyle = '#000000';
+    // Theme Color Definitions
+    let bgColor = '#000000';
+    let gridColor = 'rgba(255, 255, 255, 0.07)';
+    let defaultLineColor = 'rgba(255, 255, 255, 0.88)';
+    let accentLineColor = 'rgba(255, 255, 255, 0.98)';
+    let glowColor = 'rgba(255, 255, 255, 0.5)';
+
+    if (theme === 'warm') {
+      bgColor = '#0d0905';
+      gridColor = 'rgba(255, 175, 75, 0.08)';
+      defaultLineColor = 'rgba(255, 195, 115, 0.9)';
+      accentLineColor = 'rgba(255, 225, 160, 1.0)';
+      glowColor = 'rgba(255, 150, 40, 0.55)';
+    } else if (theme === 'darkgreen') {
+      bgColor = '#030d06';
+      gridColor = 'rgba(50, 220, 100, 0.08)';
+      defaultLineColor = 'rgba(70, 235, 125, 0.9)';
+      accentLineColor = 'rgba(140, 255, 180, 1.0)';
+      glowColor = 'rgba(40, 220, 95, 0.6)';
+    } else if (theme === 'rgb') {
+      bgColor = '#050408';
+      gridColor = 'rgba(180, 120, 255, 0.075)';
+      glowColor = 'rgba(255, 255, 255, 0.45)';
+    }
+
+    // 1. Clear background
+    ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, width, height);
 
     ctx.save();
     ctx.scale(dpr, dpr);
 
-    // 2. Draw subtle cartographic square grid
+    // 2. Draw subtle cartographic grid
     ctx.beginPath();
-    ctx.strokeStyle = this.gridColor;
+    ctx.strokeStyle = gridColor;
     ctx.lineWidth = 1;
     ctx.shadowBlur = 0;
 
@@ -176,17 +213,14 @@ class TopographyEngine {
     }
     ctx.stroke();
 
-    // 3. Evaluate noise height field into preallocated buffer
+    // 3. Evaluate noise height field into preallocated typed buffer
     let idx = 0;
     for (let r = 0; r < rows; r++) {
       const y = r * cellSize;
       for (let c = 0; c < cols; c++) {
         const x = c * cellSize;
-        // Primary broad elevation
         const n1 = simplex.noise3D(x * scale, y * scale, t);
-        // Secondary soft harmonic
-        const n2 = simplex.noise3D(x * scale * 2.0 + 8.1, y * scale * 2.0 + 12.3, t * 1.2) * 0.32;
-        // Smooth normalization into [0, 1] range
+        const n2 = simplex.noise3D(x * scale * 2.1 + 8.1, y * scale * 2.1 + 12.3, t * 1.25) * 0.32;
         noiseBuffer[idx++] = (n1 + n2 + 1.32) * 0.378;
       }
     }
@@ -194,7 +228,6 @@ class TopographyEngine {
     // 4. Marching Squares contour line extraction with soft glow
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.shadowColor = this.glowColor;
     ctx.shadowBlur = 5;
 
     const levels = this.isoLevels;
@@ -202,11 +235,21 @@ class TopographyEngine {
 
     for (let l = 0; l < numLevels; l++) {
       const iso = levels[l];
-      const isMajorLine = (l % 3 === 0);
+      const isMajorLine = (l % 4 === 0);
 
       ctx.beginPath();
-      ctx.strokeStyle = isMajorLine ? this.accentLineColor : this.lineColor;
-      ctx.lineWidth = isMajorLine ? this.lineWidth * 1.3 : this.lineWidth;
+
+      if (theme === 'rgb') {
+        // RGB Gamer Rainbow mode: dynamic shifting hue based on time and contour level
+        const hue = (currentTime * 0.045 + l * 22) % 360;
+        ctx.strokeStyle = `hsl(${hue}, 100%, ${isMajorLine ? '75%' : '65%'})`;
+        ctx.shadowColor = `hsl(${hue}, 100%, 50%)`;
+      } else {
+        ctx.strokeStyle = isMajorLine ? accentLineColor : defaultLineColor;
+        ctx.shadowColor = glowColor;
+      }
+
+      ctx.lineWidth = isMajorLine ? this.lineWidth * 1.35 : this.lineWidth;
 
       for (let r = 0; r < rows - 1; r++) {
         const yTop = r * cellSize;
@@ -231,7 +274,6 @@ class TopographyEngine {
 
           if (cellCase === 0 || cellCase === 15) continue;
 
-          // Interpolated edge crossings
           const topX = xLeft + (iso - vTL) / (vTR - vTL || 0.0001) * cellSize;
           const rightY = yTop + (iso - vTR) / (vBR - vTR || 0.0001) * cellSize;
           const bottomX = xLeft + (iso - vBL) / (vBR - vBL || 0.0001) * cellSize;

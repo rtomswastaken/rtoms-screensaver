@@ -8,7 +8,7 @@
   <title>rtoms screensaver</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="monochrome">
   <!-- Topography Canvas Background -->
   <canvas id="bg-canvas"></canvas>
 
@@ -86,8 +86,10 @@
     </div>
   </main>
 
-  <!-- Bottom Screensaver HUD / Shortcut Bar (Fades out when mouse is idle) -->
+  <!-- Bottom Screensaver HUD / Shortcut Bar (Shows only when cursor moves to the bottom) -->
   <footer class="hud-bar" id="hud-bar">
+    <div class="hud-item" id="theme-badge">Theme: B&W [T]</div>
+    <div class="hud-separator">•</div>
     <div class="hud-item" id="density-badge">Density: Medium [M]</div>
     <div class="hud-separator">•</div>
     <div class="hud-item" id="pause-badge">Live [Space]</div>
