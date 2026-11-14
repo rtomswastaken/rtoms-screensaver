@@ -20,7 +20,7 @@
     </div>
   </header>
 
-  <!-- Main Centered Flip Clock & Date -->
+  <!-- Main Centered Flip Clock & Frosted Date -->
   <main class="clock-stage">
     <div class="clock-wrapper">
       <div class="clock-container" id="flip-clock" aria-label="24-hour flip clock">
@@ -79,25 +79,34 @@
         </div>
       </div>
 
-      <!-- Current Date in Month Date and Year format -->
+      <!-- Current Date in Month Date and Year format (Frosted Glass Pill) -->
       <div class="clock-date" id="clock-date">
         <span class="date-text" id="date-text">November 14, 2026</span>
       </div>
     </div>
   </main>
 
-  <!-- Bottom Screensaver HUD / Shortcut Bar (Shows only when cursor moves to the bottom) -->
+  <!-- Bottom Screensaver HUD / Frosted Glass Action Bar (Shows when cursor is at bottom) -->
   <footer class="hud-bar" id="hud-bar">
-    <div class="hud-item" id="theme-badge">Theme: B&W [T]</div>
-    <div class="hud-separator">•</div>
-    <div class="hud-item" id="density-badge">Density: Medium [M]</div>
-    <div class="hud-separator">•</div>
-    <div class="hud-item" id="pause-badge">Live [Space]</div>
-    <div class="hud-separator">•</div>
-    <div class="hud-item" id="fullscreen-badge">Fullscreen [F]</div>
+    <button class="hud-btn" id="theme-badge" type="button" aria-label="Cycle Theme">
+      <span class="btn-icon">🎨</span>
+      <span class="btn-label">Theme: B&W [T]</span>
+    </button>
+    <button class="hud-btn" id="density-badge" type="button" aria-label="Cycle Density">
+      <span class="btn-icon">〰️</span>
+      <span class="btn-label">Density: Medium [M]</span>
+    </button>
+    <button class="hud-btn" id="pause-badge" type="button" aria-label="Pause or Resume">
+      <span class="btn-icon">▶</span>
+      <span class="btn-label">Live [Space]</span>
+    </button>
+    <button class="hud-btn" id="fullscreen-badge" type="button" aria-label="Toggle Fullscreen">
+      <span class="btn-icon">⛶</span>
+      <span class="btn-label">Fullscreen [F]</span>
+    </button>
   </footer>
 
-  <!-- Subtle Hint Banner on First Non-Kiosk Launch -->
+  <!-- Frosted Glass Hint Banner on First Launch -->
   <div class="kiosk-hint" id="kiosk-hint">
     <span>Click anywhere or press <strong>F</strong> for fullscreen</span>
   </div>

@@ -155,14 +155,23 @@
   let currentThemeIndex = -1; // Next press triggers themes[0] ('warm')
   const themeBadge = document.getElementById('theme-badge');
 
+  // Helper to update button label preserving icon
+  function updateBadgeLabel(el, text) {
+    if (!el) return;
+    const label = el.querySelector('.btn-label');
+    if (label) {
+      label.textContent = text;
+    } else {
+      el.textContent = text;
+    }
+  }
+
   function applyTheme(themeObj) {
     document.body.setAttribute('data-theme', themeObj.id);
     if (topography) {
       topography.setTheme(themeObj.id);
     }
-    if (themeBadge) {
-      themeBadge.textContent = `Theme: ${themeObj.name} [T]`;
-    }
+    updateBadgeLabel(themeBadge, `Theme: ${themeObj.name} [T]`);
   }
 
   function cycleTheme() {
@@ -227,9 +236,7 @@
 
   function updateFullscreenUI() {
     const fs = isFullscreen();
-    if (fullscreenBadge) {
-      fullscreenBadge.textContent = fs ? 'Windowed [F]' : 'Fullscreen [F]';
-    }
+    updateBadgeLabel(fullscreenBadge, fs ? 'Windowed [F]' : 'Fullscreen [F]');
     if (fs && kioskHint) {
       kioskHint.classList.add('hidden');
     }
@@ -314,18 +321,14 @@
       e.preventDefault();
       if (topography) {
         const isPaused = topography.togglePause();
-        if (pauseBadge) {
-          pauseBadge.textContent = isPaused ? 'Paused [Space]' : 'Live [Space]';
-        }
+        updateBadgeLabel(pauseBadge, isPaused ? 'Paused [Space]' : 'Live [Space]');
       }
     } else if (key === 'm') {
       e.preventDefault();
       if (topography) {
         const density = topography.cycleDensity();
-        if (densityBadge) {
-          const cap = density.charAt(0).toUpperCase() + density.slice(1);
-          densityBadge.textContent = `Density: ${cap} [M]`;
-        }
+        const cap = density.charAt(0).toUpperCase() + density.slice(1);
+        updateBadgeLabel(densityBadge, `Density: ${cap} [M]`);
       }
     }
   });
@@ -341,7 +344,7 @@
     pauseBadge.addEventListener('click', () => {
       if (topography) {
         const isPaused = topography.togglePause();
-        pauseBadge.textContent = isPaused ? 'Paused [Space]' : 'Live [Space]';
+        updateBadgeLabel(pauseBadge, isPaused ? 'Paused [Space]' : 'Live [Space]');
       }
     });
   }
@@ -350,7 +353,7 @@
       if (topography) {
         const density = topography.cycleDensity();
         const cap = density.charAt(0).toUpperCase() + density.slice(1);
-        densityBadge.textContent = `Density: ${cap} [M]`;
+        updateBadgeLabel(densityBadge, `Density: ${cap} [M]`);
       }
     });
   }

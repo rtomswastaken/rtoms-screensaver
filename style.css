@@ -1,21 +1,27 @@
 /* ==========================================================================
    rtoms-screensaver: Core Styles
-   Monochrome, Themes (Warm, Dark Green, RGB Gamer), 3D mechanical flip clock.
+   Monochrome, Themes, 3D mechanical flip clock, Frosted Glassmorphism.
    ========================================================================== */
 
 :root {
   --bg-color: #000000;
-  --card-bg: rgba(18, 18, 18, 0.94);
-  --card-border: rgba(255, 255, 255, 0.18);
-  --card-border-highlight: rgba(255, 255, 255, 0.35);
-  --card-crease: #050505;
+  
+  /* Frosted Glassmorphism Variables */
+  --card-bg: rgba(18, 18, 18, 0.72);
+  --card-border: rgba(255, 255, 255, 0.16);
+  --card-border-highlight: rgba(255, 255, 255, 0.45);
+  --card-crease: rgba(0, 0, 0, 0.85);
+  --glass-specular: rgba(255, 255, 255, 0.24);
+  --glass-blur: 24px;
+  
   --text-color: #ffffff;
-  --separator-color: rgba(255, 255, 255, 0.85);
+  --separator-color: rgba(255, 255, 255, 0.88);
+  --date-bg: rgba(18, 18, 18, 0.62);
   --date-border: rgba(255, 255, 255, 0.18);
-  --date-color: rgba(255, 255, 255, 0.85);
+  --date-color: rgba(255, 255, 255, 0.9);
   --subheading-color: rgba(255, 255, 255, 0.82);
   
-  /* Even larger, prominently centered 24-hour flip clock */
+  /* Large prominently centered 24-hour flip clock */
   --card-width: clamp(3.8rem, 10.6vw, 12rem);
   --card-height: clamp(5.8rem, 16.2vw, 18rem);
   --card-radius: clamp(8px, 1.3vw, 16px);
@@ -26,32 +32,36 @@
 }
 
 /* ==========================================================================
-   Themes
+   Themes with Tinted Frosted Glass
    ========================================================================== */
 
 /* 1. Warmer Tone */
 body[data-theme="warm"] {
   --bg-color: #0d0905;
-  --card-bg: rgba(26, 18, 12, 0.94);
-  --card-border: rgba(255, 180, 85, 0.26);
+  --card-bg: rgba(28, 18, 11, 0.72);
+  --card-border: rgba(255, 180, 85, 0.24);
   --card-border-highlight: rgba(255, 210, 120, 0.55);
-  --card-crease: #070402;
+  --glass-specular: rgba(255, 200, 120, 0.3);
+  --card-crease: rgba(12, 7, 3, 0.9);
   --text-color: #fff6ee;
   --separator-color: rgba(255, 205, 125, 0.92);
+  --date-bg: rgba(28, 18, 11, 0.62);
   --date-border: rgba(255, 180, 85, 0.26);
   --date-color: rgba(255, 215, 140, 0.95);
   --subheading-color: rgba(255, 200, 120, 0.88);
 }
 
-/* 2. Dark Green with Lighter Green Shades */
+/* 2. Dark Green (Emerald / Tactical) */
 body[data-theme="darkgreen"] {
   --bg-color: #030d06;
-  --card-bg: rgba(8, 26, 14, 0.94);
-  --card-border: rgba(70, 235, 125, 0.28);
+  --card-bg: rgba(8, 28, 15, 0.72);
+  --card-border: rgba(70, 235, 125, 0.25);
   --card-border-highlight: rgba(140, 255, 180, 0.6);
-  --card-crease: #020703;
+  --glass-specular: rgba(100, 255, 150, 0.32);
+  --card-crease: rgba(2, 12, 5, 0.9);
   --text-color: #ebffef;
   --separator-color: rgba(90, 250, 145, 0.92);
+  --date-bg: rgba(8, 28, 15, 0.62);
   --date-border: rgba(70, 235, 125, 0.28);
   --date-color: rgba(110, 255, 165, 0.95);
   --subheading-color: rgba(85, 240, 140, 0.88);
@@ -60,26 +70,30 @@ body[data-theme="darkgreen"] {
 /* 3. Black & White Monochrome */
 body[data-theme="monochrome"] {
   --bg-color: #000000;
-  --card-bg: rgba(18, 18, 18, 0.94);
-  --card-border: rgba(255, 255, 255, 0.18);
-  --card-border-highlight: rgba(255, 255, 255, 0.35);
-  --card-crease: #050505;
+  --card-bg: rgba(18, 18, 18, 0.72);
+  --card-border: rgba(255, 255, 255, 0.16);
+  --card-border-highlight: rgba(255, 255, 255, 0.45);
+  --glass-specular: rgba(255, 255, 255, 0.24);
+  --card-crease: rgba(0, 0, 0, 0.85);
   --text-color: #ffffff;
-  --separator-color: rgba(255, 255, 255, 0.85);
+  --separator-color: rgba(255, 255, 255, 0.88);
+  --date-bg: rgba(18, 18, 18, 0.62);
   --date-border: rgba(255, 255, 255, 0.18);
-  --date-color: rgba(255, 255, 255, 0.85);
+  --date-color: rgba(255, 255, 255, 0.9);
   --subheading-color: rgba(255, 255, 255, 0.82);
 }
 
 /* 4. RGB Gamer Mode */
 body[data-theme="rgb"] {
   --bg-color: #050408;
-  --card-bg: rgba(16, 14, 22, 0.94);
+  --card-bg: rgba(18, 14, 25, 0.72);
   --card-border: rgba(255, 0, 128, 0.4);
   --card-border-highlight: rgba(0, 255, 200, 0.7);
-  --card-crease: #030206;
+  --glass-specular: rgba(255, 0, 200, 0.35);
+  --card-crease: rgba(4, 2, 7, 0.9);
   --text-color: #ffffff;
   --separator-color: #00ffcc;
+  --date-bg: rgba(18, 14, 25, 0.62);
   --date-border: rgba(0, 255, 200, 0.4);
   --date-color: #ffffff;
   --subheading-color: #ff007f;
@@ -99,6 +113,10 @@ body[data-theme="rgb"] .flip-unit {
 }
 
 body[data-theme="rgb"] .clock-date {
+  animation: rgb-border 5s linear infinite;
+}
+
+body[data-theme="rgb"] .hud-bar {
   animation: rgb-border 5s linear infinite;
 }
 
@@ -134,7 +152,6 @@ html, body {
   transition: background-color 0.5s ease;
 }
 
-/* Screensaver idle cursor hiding */
 body.cursor-hidden {
   cursor: none !important;
 }
@@ -199,7 +216,7 @@ body.cursor-hidden * {
 }
 
 /* ==========================================================================
-   Clock Stage & Mechanical Flip Cards
+   Clock Stage & Frosted Glass Flip Cards
    ========================================================================== */
 
 .clock-stage {
@@ -256,21 +273,27 @@ body.cursor-hidden * {
   50% { opacity: 0.3; }
 }
 
-/* Flip Card Individual Digit Unit */
+/* Flip Card Individual Digit Unit - Frosted Glassmorphism */
 .flip-unit {
   position: relative;
   width: var(--card-width);
   height: var(--card-height);
   border-radius: var(--card-radius);
   background: var(--card-bg);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.88), 0 4px 14px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--card-border);
+  border-top: 1px solid var(--glass-specular);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 2px 10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px var(--glass-specular);
   perspective: 1400px;
   -webkit-perspective: 1400px;
-  border: 1px solid var(--card-border);
-  transition: background-color 0.4s ease, border-color 0.4s ease;
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Side notch hinges for realistic mechanical clock aesthetic */
+/* Side notch hinges */
 .flip-unit::before,
 .flip-unit::after {
   content: "";
@@ -294,8 +317,8 @@ body.cursor-hidden * {
   height: 50%;
   overflow: hidden;
   background: var(--card-bg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "SF Pro Display", monospace;
   font-size: var(--font-size);
   font-weight: 700;
@@ -348,7 +371,6 @@ body.cursor-hidden * {
   line-height: var(--card-height);
 }
 
-/* Static base layers */
 .card-half.static {
   z-index: 1;
 }
@@ -371,7 +393,6 @@ body.cursor-hidden * {
   transform: rotateX(90deg);
 }
 
-/* Realistic Shadow Gradients for 3D depth during folding */
 .card-half.flap::after {
   content: "";
   position: absolute;
@@ -406,7 +427,6 @@ body.cursor-hidden * {
   100% { opacity: 0; }
 }
 
-/* Active Flipping State Classes */
 .flip-unit.flipping .card-half.top.flap {
   animation: flip-top var(--flip-duration) var(--flip-timing) forwards;
 }
@@ -446,7 +466,7 @@ body.cursor-hidden * {
 }
 
 /* ==========================================================================
-   Clock Date Display (Month Date, Year)
+   Clock Date Display (Frosted Glass Pill)
    ========================================================================== */
 
 .clock-date {
@@ -455,86 +475,128 @@ body.cursor-hidden * {
   align-items: center;
   padding: clamp(9px, 1.1vw, 14px) clamp(22px, 2.6vw, 40px);
   border-radius: 9999px;
-  background: var(--card-bg);
+  background: var(--date-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
   border: 1px solid var(--date-border);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--glass-specular);
   font-size: clamp(1.05rem, 2vw, 1.85rem);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--date-color);
-  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.68);
-  transition: border-color 0.4s ease, color 0.4s ease, background-color 0.4s ease;
+  box-shadow: 
+    0 16px 36px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px var(--glass-specular);
+  transition: border-color 0.4s ease, color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* ==========================================================================
-   HUD & Keyboard Status Bar (Shows ONLY when cursor moves to bottom)
+   HUD & Frosted Glassmorphism Action Bar & Buttons
    ========================================================================== */
 
 .hud-bar {
   position: fixed;
-  bottom: clamp(1.2rem, 2.5vw, 2.2rem);
+  bottom: clamp(1.4rem, 2.6vw, 2.4rem);
   left: 50%;
   transform: translate(-50%, 25px);
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 22px;
+  gap: 10px;
+  padding: 8px 14px;
   border-radius: 9999px;
-  background: rgba(14, 14, 14, 0.78);
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.75);
+  background: rgba(18, 18, 22, 0.58);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.65),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
   z-index: 30;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Revealed only when cursor approaches the bottom of the screen */
 .hud-bar.visible {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, 0);
 }
 
-.hud-item {
+/* Frosted Glass Buttons inside HUD */
+.hud-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.88);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  transition: color 0.2s ease;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hud-item:hover {
+.hud-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.38);
+  border-top-color: rgba(255, 255, 255, 0.6);
   color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 22px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
 }
 
-.hud-separator {
-  color: rgba(255, 255, 255, 0.25);
-  font-size: 0.6rem;
+.hud-btn:active {
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.btn-icon {
+  font-size: 0.88rem;
+  opacity: 0.9;
 }
 
 /* ==========================================================================
-   Kiosk / Fullscreen First Interaction Toast
+   Kiosk / Fullscreen First Interaction Toast (Frosted Glass)
    ========================================================================== */
 
 .kiosk-hint {
   position: fixed;
-  bottom: clamp(4.5rem, 6.5vw, 6rem);
+  bottom: clamp(5rem, 7vw, 6.5rem);
   left: 50%;
   transform: translateX(-50%);
-  padding: 8px 20px;
-  border-radius: 8px;
-  background: rgba(20, 20, 20, 0.85);
-  border: 1px solid var(--card-border);
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  background: rgba(20, 20, 24, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 
+    0 16px 36px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.84rem;
+  letter-spacing: 0.05em;
   z-index: 25;
   pointer-events: none;
-  backdrop-filter: blur(8px);
   transition: opacity 0.8s ease, transform 0.8s ease;
   opacity: 1;
 }
