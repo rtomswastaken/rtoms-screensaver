@@ -1,13 +1,13 @@
 @echo off
 :: ============================================================================
-:: rtoms-screensaver: Windows Kiosk Mode Launcher
-:: Launches the screensaver directly in full-screen kiosk mode with no browser
+:: RTOMS: Windows Kiosk Mode Launcher
+:: Launches the CRT Ambient Dashboard in full-screen kiosk mode with no browser
 :: borders, address bars, tabs, or toolbars.
 ::
 :: To exit kiosk mode at any time, press: Alt + F4
 :: ============================================================================
 
-title rtoms-screensaver Kiosk Launcher
+title RTOMS CRT Dashboard Kiosk Launcher
 cls
 
 :: Resolve absolute path of index.html in the current directory
@@ -15,15 +15,17 @@ set "HTML_PATH=%~dp0index.html"
 set "HTML_URL=file:///%HTML_PATH:\=/%"
 
 echo ===================================================================
-echo   rtoms-screensaver: Starting Windows Kiosk Mode...
+echo   RTOMS: Starting Retro CRT Ambient Dashboard Kiosk Mode...
 echo ===================================================================
 echo Target: %HTML_URL%
 echo.
 echo Controls:
 echo   - [Alt + F4] : Exit Kiosk Mode
-echo   - [Space]    : Pause / Resume topography
-echo   - [M]        : Cycle contour density
-echo   - [F]        : Fullscreen toggle
+echo   - [T]        : Cycle Phosphor Theme (Amber / Green / Cyan / Mono)
+echo   - [Space]    : Pause / Resume Telemetry stream
+echo   - [F]        : Toggle Fullscreen
+echo   - [R]        : Force Refresh Kanjirappally Live Weather
+echo   - [H]        : Toggle CRT Curved / Flat Glass Mode
 echo ===================================================================
 echo.
 

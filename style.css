@@ -1,632 +1,674 @@
 /* ==========================================================================
-   rtoms-screensaver: Core Styles
-   Monochrome, Themes, 3D mechanical flip clock, Smooth Frosted Glassmorphism.
+   RTOMS - Retro CRT Ambient Dashboard & Screensaver Stylesheet
+   Pure Vanilla CSS with Convex Barrel Distortion, Phosphor Bloom & Themes
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   1. Theme Variables & Reset
+   -------------------------------------------------------------------------- */
 :root {
-  --bg-color: #000000;
-  
-  /* Reduced, Crystal-Clear Frosted Glass (Zero glitching, lines clearly visible passing through) */
-  --card-bg: rgba(12, 12, 12, 0.32);
-  --card-border: rgba(255, 255, 255, 0.16);
-  --card-border-highlight: rgba(255, 255, 255, 0.45);
-  --card-crease: rgba(0, 0, 0, 0.85);
-  --glass-specular: rgba(255, 255, 255, 0.28);
-  --glass-blur: 6px;
-  
-  --text-color: #ffffff;
-  --separator-color: rgba(255, 255, 255, 0.88);
-  --date-bg: rgba(12, 12, 12, 0.35);
-  --date-border: rgba(255, 255, 255, 0.18);
-  --date-color: rgba(255, 255, 255, 0.92);
-  --subheading-color: rgba(255, 255, 255, 0.82);
-  
-  /* Prominently centered 24-hour flip clock */
-  --card-width: clamp(3.6rem, 9.8vw, 11rem);
-  --card-height: clamp(5.4rem, 15vw, 16.8rem);
-  --card-radius: clamp(8px, 1.3vw, 16px);
-  --font-size: clamp(3.8rem, 10.8vw, 12rem);
-  
-  --flip-duration: 480ms;
-  --flip-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
+  /* Default: Amber Phosphor */
+  --bg: #0a0600;
+  --bg-deep: #050300;
+  --primary: #ffb000;
+  --highlight: #ffe082;
+  --muted: rgba(255, 176, 0, 0.32);
+  --dim: rgba(255, 176, 0, 0.08);
+  --border: rgba(255, 176, 0, 0.28);
+  --border-strong: rgba(255, 176, 0, 0.6);
+  --glow: 0 0 8px rgba(255, 176, 0, 0.45), 0 0 18px rgba(255, 176, 0, 0.15);
+  --glow-strong: 0 0 12px rgba(255, 176, 0, 0.75), 0 0 28px rgba(255, 176, 0, 0.3);
+  --bezel-color: #100f0d;
+  --bezel-border: #22201b;
 }
 
-/* ==========================================================================
-   Themes with Clean, Low-Opacity Frosted Glass
-   ========================================================================== */
-
-/* 1. Warmer Tone */
-body[data-theme="warm"] {
-  --bg-color: #0d0905;
-  --card-bg: rgba(22, 14, 8, 0.35);
-  --card-border: rgba(255, 180, 85, 0.25);
-  --card-border-highlight: rgba(255, 210, 120, 0.55);
-  --glass-specular: rgba(255, 200, 120, 0.35);
-  --card-crease: rgba(14, 8, 4, 0.9);
-  --text-color: #fff6ee;
-  --separator-color: rgba(255, 205, 125, 0.92);
-  --date-bg: rgba(22, 14, 8, 0.35);
-  --date-border: rgba(255, 180, 85, 0.28);
-  --date-color: rgba(255, 215, 140, 0.95);
-  --subheading-color: rgba(255, 200, 120, 0.88);
+body[data-theme="green"] {
+  --bg: #000a03;
+  --bg-deep: #000401;
+  --primary: #33ff66;
+  --highlight: #a3ffbe;
+  --muted: rgba(51, 255, 102, 0.32);
+  --dim: rgba(51, 255, 102, 0.08);
+  --border: rgba(51, 255, 102, 0.28);
+  --border-strong: rgba(51, 255, 102, 0.6);
+  --glow: 0 0 8px rgba(51, 255, 102, 0.45), 0 0 18px rgba(51, 255, 102, 0.15);
+  --glow-strong: 0 0 12px rgba(51, 255, 102, 0.75), 0 0 28px rgba(51, 255, 102, 0.3);
+  --bezel-color: #0c120e;
+  --bezel-border: #18261c;
 }
 
-/* 2. Dark Green (Emerald / Tactical) */
-body[data-theme="darkgreen"] {
-  --bg-color: #030d06;
-  --card-bg: rgba(6, 22, 11, 0.35);
-  --card-border: rgba(70, 235, 125, 0.26);
-  --card-border-highlight: rgba(140, 255, 180, 0.6);
-  --glass-specular: rgba(100, 255, 150, 0.35);
-  --card-crease: rgba(2, 14, 6, 0.9);
-  --text-color: #ebffef;
-  --separator-color: rgba(90, 250, 145, 0.92);
-  --date-bg: rgba(6, 22, 11, 0.35);
-  --date-border: rgba(70, 235, 125, 0.28);
-  --date-color: rgba(110, 255, 165, 0.95);
-  --subheading-color: rgba(85, 240, 140, 0.88);
+body[data-theme="cyan"] {
+  --bg: #02080d;
+  --bg-deep: #010406;
+  --primary: #00f0ff;
+  --highlight: #d5fbff;
+  --muted: rgba(0, 240, 255, 0.32);
+  --dim: rgba(0, 240, 255, 0.08);
+  --border: rgba(0, 240, 255, 0.28);
+  --border-strong: rgba(0, 240, 255, 0.6);
+  --glow: 0 0 8px rgba(0, 240, 255, 0.45), 0 0 18px rgba(0, 240, 255, 0.15);
+  --glow-strong: 0 0 12px rgba(0, 240, 255, 0.75), 0 0 28px rgba(0, 240, 255, 0.3);
+  --bezel-color: #0b1117;
+  --bezel-border: #17242e;
 }
 
-/* 3. Black & White Monochrome */
 body[data-theme="monochrome"] {
-  --bg-color: #000000;
-  --card-bg: rgba(12, 12, 12, 0.32);
-  --card-border: rgba(255, 255, 255, 0.16);
-  --card-border-highlight: rgba(255, 255, 255, 0.45);
-  --glass-specular: rgba(255, 255, 255, 0.28);
-  --card-crease: rgba(0, 0, 0, 0.85);
-  --text-color: #ffffff;
-  --separator-color: rgba(255, 255, 255, 0.88);
-  --date-bg: rgba(12, 12, 12, 0.35);
-  --date-border: rgba(255, 255, 255, 0.18);
-  --date-color: rgba(255, 255, 255, 0.92);
-  --subheading-color: rgba(255, 255, 255, 0.82);
-}
-
-/* 4. RGB Gamer Mode */
-body[data-theme="rgb"] {
-  --bg-color: #050408;
-  --card-bg: rgba(16, 12, 24, 0.35);
-  --card-border: rgba(255, 0, 128, 0.4);
-  --card-border-highlight: rgba(0, 255, 200, 0.7);
-  --glass-specular: rgba(255, 0, 200, 0.35);
-  --card-crease: rgba(4, 2, 7, 0.9);
-  --text-color: #ffffff;
-  --separator-color: #00ffcc;
-  --date-bg: rgba(16, 12, 24, 0.35);
-  --date-border: rgba(0, 255, 200, 0.4);
-  --date-color: #ffffff;
-  --subheading-color: #ff007f;
-}
-
-body[data-theme="rgb"] .title-heading {
-  background: linear-gradient(90deg, #ff007f, #00dfd8, #7928ca, #ff007f);
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rgb-text 4s linear infinite;
-  text-shadow: none;
-}
-
-body[data-theme="rgb"] .flip-unit {
-  animation: rgb-border 5s linear infinite;
-}
-
-body[data-theme="rgb"] .clock-date {
-  animation: rgb-border 5s linear infinite;
-}
-
-body[data-theme="rgb"] .hud-bar {
-  animation: rgb-border 5s linear infinite;
-}
-
-@keyframes rgb-text {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
-}
-
-@keyframes rgb-border {
-  0% { border-color: #ff007f; box-shadow: 0 0 25px rgba(255, 0, 127, 0.35); }
-  33% { border-color: #00dfd8; box-shadow: 0 0 25px rgba(0, 223, 216, 0.35); }
-  66% { border-color: #7928ca; box-shadow: 0 0 25px rgba(121, 40, 202, 0.35); }
-  100% { border-color: #ff007f; box-shadow: 0 0 25px rgba(255, 0, 127, 0.35); }
+  --bg: #050505;
+  --bg-deep: #020202;
+  --primary: #f0f0f0;
+  --highlight: #ffffff;
+  --muted: rgba(240, 240, 240, 0.3);
+  --dim: rgba(240, 240, 240, 0.08);
+  --border: rgba(240, 240, 240, 0.28);
+  --border-strong: rgba(240, 240, 240, 0.6);
+  --glow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(240, 240, 240, 0.12);
+  --glow-strong: 0 0 12px rgba(240, 240, 240, 0.65), 0 0 28px rgba(240, 240, 240, 0.25);
+  --bezel-color: #121212;
+  --bezel-border: #242424;
 }
 
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html, body {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #000000;
+  color: var(--primary);
+  font-family: 'Share Tech Mono', 'Courier New', Courier, ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.35;
   user-select: none;
   -webkit-user-select: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.5s ease;
 }
 
 body.cursor-hidden {
-  cursor: none !important;
-}
-body.cursor-hidden * {
-  cursor: none !important;
+  cursor: none;
 }
 
-/* Background Topography Canvas */
-#bg-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-  pointer-events: none;
-  display: block;
-}
-
-/* ==========================================================================
-   Header & Prominent Top-Left "hello rtoms" Title
-   ========================================================================== */
-
-.header-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  padding: clamp(2rem, 4vw, 4.5rem);
-  pointer-events: none;
-  z-index: 20;
-}
-
-.site-title {
-  display: flex;
-  flex-direction: column;
-  pointer-events: auto;
-}
-
-.title-subheading {
-  font-size: clamp(1.8rem, 3.5vw, 4rem);
-  font-weight: 700;
-  color: var(--subheading-color);
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
-  line-height: 1;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
-  transition: color 0.4s ease;
-}
-
-.title-heading {
-  font-size: clamp(5.2rem, 13vw, 14.5rem);
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.045em;
-  text-transform: lowercase;
-  line-height: 0.82;
-  margin-top: clamp(2px, 0.4vw, 8px);
-  text-shadow: 0 4px 35px rgba(0, 0, 0, 0.98);
-  transition: color 0.4s ease;
-}
-
-/* ==========================================================================
-   Clock Stage & Frosted Glass Flip Cards
-   ========================================================================== */
-
-.clock-stage {
-  position: relative;
+/* --------------------------------------------------------------------------
+   2. Vintage CRT Chassis & Convex Glass Container
+   -------------------------------------------------------------------------- */
+.crt-monitor {
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  pointer-events: none;
+  background: radial-gradient(circle at center, #151412 0%, #080808 65%, #000000 100%);
+  padding: 8px;
 }
 
-.clock-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(1.4rem, 3vw, 3.4rem);
-}
-
-.clock-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(0.7rem, 2vw, 2.2rem);
-  pointer-events: auto;
-  perspective: 1800px;
-  -webkit-perspective: 1800px;
-}
-
-.digit-pair {
-  display: flex;
-  gap: clamp(0.45rem, 0.9vw, 1rem);
-}
-
-.clock-separator {
-  font-size: calc(var(--font-size) * 0.72);
-  font-weight: 300;
-  color: var(--separator-color);
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 clamp(0.2rem, 0.6vw, 0.8rem);
-  animation: colon-blink 2s infinite ease-in-out;
-  transform: translateY(-5%);
-  text-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
-  transition: color 0.4s ease;
-}
-
-@keyframes colon-blink {
-  0%, 100% { opacity: 0.9; }
-  50% { opacity: 0.3; }
-}
-
-/* Flip Card Digit Unit - Clean Non-Glitching Frosted Glass */
-.flip-unit {
+/* Authentic Convex Curved Screen */
+.crt-screen {
   position: relative;
-  width: var(--card-width);
-  height: var(--card-height);
-  border-radius: var(--card-radius);
-  background: var(--card-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--card-border);
-  border-top: 1px solid var(--glass-specular);
-  box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.75),
-    0 2px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 1px var(--glass-specular);
-  perspective: 1400px;
-  -webkit-perspective: 1400px;
-  transform: translateZ(0); /* Hardware accelerated compositing */
-  will-change: transform;
-  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-}
-
-/* Side notch hinges */
-.flip-unit::before,
-.flip-unit::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: clamp(4px, 0.7vw, 8px);
-  height: clamp(6px, 0.9vw, 11px);
-  background: var(--card-crease);
-  border-radius: 2px;
-  transform: translateY(-50%);
-  z-index: 30;
-}
-.flip-unit::before { left: 0; }
-.flip-unit::after { right: 0; }
-
-/* The horizontal center crease */
-.flip-unit .card-half {
-  position: absolute;
-  left: 0;
   width: 100%;
-  height: 50%;
+  height: 100%;
+  max-width: 580px; /* 9:16 proportioned width for vertical monitors / mobile */
+  max-height: 98vh;
+  aspect-ratio: 9 / 16;
+  background-color: var(--bg);
+  border-radius: 28px;
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.95),
+    inset 0 0 100px rgba(0, 0, 0, 0.8),
+    0 0 0 4px var(--bezel-border),
+    0 0 0 12px var(--bezel-color),
+    0 0 35px rgba(0, 0, 0, 0.9);
   overflow: hidden;
-  background: rgba(12, 12, 12, 0.15); /* Subtle inner wash, lets blur pass through cleanly */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "SF Pro Display", monospace;
-  font-size: var(--font-size);
-  font-weight: 700;
-  color: var(--text-color);
-  font-variant-numeric: tabular-nums;
-  -webkit-font-variant-numeric: tabular-nums;
-  box-sizing: border-box;
-  transition: color 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  transition: border-radius 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Top half properties */
-.card-half.top {
-  top: 0;
-  border-top-left-radius: var(--card-radius);
-  border-top-right-radius: var(--card-radius);
-  border-bottom: 1px solid var(--card-crease);
-  transform-origin: bottom center;
+/* On wide screens without 9:16 constraint */
+@media (min-aspect-ratio: 9/16) {
+  .crt-screen {
+    height: 98vh;
+    width: auto;
+  }
 }
 
-.card-half.top .digit-num {
+/* On mobile or native portrait displays */
+@media (max-width: 600px), (max-aspect-ratio: 9/16) {
+  .crt-monitor {
+    padding: 0;
+    background: var(--bg);
+  }
+  .crt-screen {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.85);
+  }
+}
+
+/* Flat / Disabled CRT Mode */
+body.crt-disabled .crt-screen {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.crt-disabled .crt-scanlines,
+body.crt-disabled .crt-raster,
+body.crt-disabled .crt-beam,
+body.crt-disabled .crt-vignette,
+body.crt-disabled .crt-glare,
+body.crt-disabled .crt-barrel {
+  display: none !important;
+}
+
+body.crt-disabled .dashboard-container {
+  animation: none !important;
+  text-shadow: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. Optical CRT Shaders & Overlay Effects
+   -------------------------------------------------------------------------- */
+
+/* Horizontal Phosphor Scanlines */
+.crt-scanlines {
   position: absolute;
+  top: 0;
   left: 0;
   right: 0;
-  top: 0;
-  height: var(--card-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: var(--card-height);
-}
-
-/* Bottom half properties */
-.card-half.bottom {
   bottom: 0;
-  border-bottom-left-radius: var(--card-radius);
-  border-bottom-right-radius: var(--card-radius);
-  border-top: 1px solid var(--card-crease);
-  transform-origin: top center;
-}
-
-.card-half.bottom .digit-num {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--card-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: var(--card-height);
-}
-
-.card-half.static {
-  z-index: 1;
-}
-
-/* 3D Moving Flaps */
-.card-half.flap {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-}
-
-.card-half.top.flap {
-  z-index: 10;
-  transform: rotateX(0deg);
-}
-
-.card-half.bottom.flap {
-  z-index: 8;
-  transform: rotateX(90deg);
-}
-
-.card-half.flap::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.42) 50%,
+    rgba(0, 0, 0, 0.42)
+  );
+  background-size: 100% 3px;
   pointer-events: none;
-}
-
-.card-half.top.flap::after {
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%);
-}
-
-.card-half.bottom.flap::after {
-  background: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%);
-}
-
-.flip-unit.flipping .card-half.top.flap::after {
-  animation: shadow-fade-in var(--flip-duration) var(--flip-timing) forwards;
-}
-
-.flip-unit.flipping .card-half.bottom.flap::after {
-  animation: shadow-fade-out var(--flip-duration) var(--flip-timing) forwards;
-}
-
-@keyframes shadow-fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 0.85; }
-}
-
-@keyframes shadow-fade-out {
-  0% { opacity: 0.85; }
-  100% { opacity: 0; }
-}
-
-.flip-unit.flipping .card-half.top.flap {
-  animation: flip-top var(--flip-duration) var(--flip-timing) forwards;
-}
-
-.flip-unit.flipping .card-half.bottom.flap {
-  animation: flip-bottom var(--flip-duration) var(--flip-timing) forwards;
-}
-
-@keyframes flip-top {
-  0% {
-    transform: rotateX(0deg);
-    z-index: 12;
-  }
-  50% {
-    transform: rotateX(-90deg);
-    z-index: 12;
-  }
-  100% {
-    transform: rotateX(-90deg);
-    z-index: 5;
-  }
-}
-
-@keyframes flip-bottom {
-  0% {
-    transform: rotateX(90deg);
-    z-index: 5;
-  }
-  50% {
-    transform: rotateX(90deg);
-    z-index: 12;
-  }
-  100% {
-    transform: rotateX(0deg);
-    z-index: 12;
-  }
-}
-
-/* ==========================================================================
-   Clock Date Display (Soft Frosted Glass Pill)
-   ========================================================================== */
-
-.clock-date {
-  pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  padding: clamp(9px, 1.1vw, 14px) clamp(22px, 2.6vw, 40px);
-  border-radius: 9999px;
-  background: var(--date-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--date-border);
-  border-top: 1px solid var(--glass-specular);
-  font-size: clamp(1.05rem, 2vw, 1.85rem);
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--date-color);
-  box-shadow: 
-    0 16px 36px rgba(0, 0, 0, 0.55),
-    inset 0 1px 1px var(--glass-specular);
-  transition: border-color 0.4s ease, color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
-}
-
-/* ==========================================================================
-   HUD & Frosted Glass Action Bar & Buttons
-   ========================================================================== */
-
-.hud-bar {
-  position: fixed;
-  bottom: clamp(1.4rem, 2.6vw, 2.4rem);
-  left: 50%;
-  transform: translate(-50%, 25px);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  border-radius: 9999px;
-  background: rgba(14, 14, 18, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.65),
-    0 4px 12px rgba(0, 0, 0, 0.4),
-    inset 0 1px 1.5px rgba(255, 255, 255, 0.22);
-  z-index: 30;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hud-bar.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, 0);
-}
-
-/* Frosted Glass Buttons inside HUD */
-.hud-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-top: 1px solid rgba(255, 255, 255, 0.28);
-  box-shadow: 
-    0 4px 14px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.88);
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hud-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.38);
-  border-top-color: rgba(255, 255, 255, 0.6);
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 
-    0 8px 22px rgba(0, 0, 0, 0.5),
-    inset 0 1px 1px rgba(255, 255, 255, 0.35);
-}
-
-.hud-btn:active {
-  transform: translateY(0);
-  background: rgba(255, 255, 255, 0.22);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
-.btn-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 100;
   opacity: 0.85;
 }
 
-.btn-icon svg {
+/* Fine Sub-Pixel Raster Dot Grid */
+.crt-raster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.3) 1px, transparent 0);
+  background-size: 3px 3px;
+  pointer-events: none;
+  z-index: 101;
+  opacity: 0.4;
+}
+
+/* Slow Phosphor Refresh Beam Sweep */
+.crt-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 25px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.04) 50%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 102;
+  animation: crtBeamSweep 9s linear infinite;
+}
+
+@keyframes crtBeamSweep {
+  0% { transform: translateY(-30px); }
+  100% { transform: translateY(105vh); }
+}
+
+/* Radial Vignette & Curved Convex Edges */
+.crt-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 62%,
+    rgba(0, 0, 0, 0.45) 85%,
+    rgba(0, 0, 0, 0.92) 100%
+  );
+  pointer-events: none;
+  z-index: 103;
+}
+
+/* Subtle Curved Glass Glare Sheen */
+.crt-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.015) 30%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 104;
+}
+
+/* Barrel Pincushion Distortion Shadow Border */
+.crt-barrel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 28px;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  z-index: 105;
+}
+
+/* Cathode Ray Tube Subtle Phosphor Flicker */
+@keyframes crtCathodeFlicker {
+  0% { opacity: 0.992; }
+  50% { opacity: 1; }
+  52% { opacity: 0.985; }
+  54% { opacity: 1; }
+  85% { opacity: 0.995; }
+  87% { opacity: 0.989; }
+  100% { opacity: 0.998; }
+}
+
+/* --------------------------------------------------------------------------
+   4. Primary Dashboard Container
+   -------------------------------------------------------------------------- */
+.dashboard-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px 24px 20px;
+  overflow: hidden;
+  z-index: 10;
+  text-shadow: var(--glow);
+  animation: crtCathodeFlicker 0.15s infinite;
+}
+
+/* --------------------------------------------------------------------------
+   5. Two-Sided Header (Greeting & Identity vs Clock & Weather)
+   -------------------------------------------------------------------------- */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed var(--border);
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Header Left: Greeting & RTOMS Identity */
+.header-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.greeting-text {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--highlight);
+  opacity: 0.85;
+}
+
+.brand-title {
+  font-family: 'VT323', 'Share Tech Mono', monospace;
+  font-size: 62px;
+  line-height: 0.85;
+  letter-spacing: 4px;
+  font-weight: 700;
+  color: var(--highlight);
+  text-shadow: var(--glow-strong);
+  margin: 3px 0 4px 0;
+}
+
+.date-text {
+  font-size: 10.5px;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  opacity: 0.9;
+}
+
+/* Header Right: Live Digital Clock & Kanjirappally Weather */
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.clock-display {
+  font-family: 'VT323', 'Share Tech Mono', monospace;
+  font-size: 32px;
+  line-height: 0.95;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--highlight);
+  text-shadow: var(--glow-strong);
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 6px 0;
+}
+
+.badge {
+  font-size: 9.5px;
+  padding: 1px 5px;
+  letter-spacing: 1px;
+  border: 1px solid var(--border);
+  background-color: var(--dim);
+  border-radius: 2px;
+}
+
+.tz-badge {
+  color: var(--highlight);
+  border-color: var(--border-strong);
+}
+
+.loc-badge {
+  color: var(--primary);
+}
+
+/* Weather Box */
+.weather-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--dim);
+  border: 1px solid var(--border);
+  padding: 4px 7px;
+  border-radius: 3px;
+}
+
+.weather-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--highlight);
+  width: 20px;
+  height: 20px;
+}
+
+.weather-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.weather-temp-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.weather-temp {
+  font-family: 'VT323', 'Share Tech Mono', monospace;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: bold;
+  color: var(--highlight);
+}
+
+.weather-desc {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--primary);
+}
+
+.weather-details {
+  font-size: 8.5px;
+  letter-spacing: 0.8px;
+  opacity: 0.8;
+  color: var(--primary);
+}
+
+/* --------------------------------------------------------------------------
+   6. Main Telemetry Visualizations Grid (2x2 Side-by-Side)
+   -------------------------------------------------------------------------- */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  flex: 1 1 54%;
+  min-height: 0;
+  margin-bottom: 10px;
+}
+
+.telemetry-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 7px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid var(--border);
+  font-size: 9px;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.card-tag {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.card-status {
+  color: var(--highlight);
+  font-size: 8.5px;
+  opacity: 0.85;
+}
+
+.canvas-wrap {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.canvas-wrap canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: block;
 }
 
-/* ==========================================================================
-   Kiosk / Fullscreen First Interaction Toast
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   7. Sub-Telemetry Row (360 Radar & Hex Stream)
+   -------------------------------------------------------------------------- */
+.sub-telemetry-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  flex: 0 0 100px;
+  min-height: 85px;
+  margin-bottom: 10px;
+}
 
-.kiosk-hint {
-  position: fixed;
-  bottom: clamp(5rem, 7vw, 6.5rem);
+.sub-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.radar-wrap,
+.hex-wrap {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  min-height: 0;
+}
+
+/* --------------------------------------------------------------------------
+   8. Autonomous Pixel-Art Turtle Arcade Mini-Game Strip
+   -------------------------------------------------------------------------- */
+.turtle-strip {
+  display: flex;
+  flex-direction: column;
+  background: var(--dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 8px;
+  flex: 0 0 78px;
+  min-height: 70px;
+  overflow: hidden;
+}
+
+.strip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  color: var(--primary);
+}
+
+.strip-sub {
+  color: var(--highlight);
+  font-size: 8px;
+  opacity: 0.8;
+}
+
+.turtle-canvas-wrap {
+  width: 100%;
+  height: 48px;
+  position: relative;
+}
+
+.turtle-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* --------------------------------------------------------------------------
+   9. Bottom Edge Auto-Hiding Control HUD
+   -------------------------------------------------------------------------- */
+.hud-bar {
+  position: absolute;
+  bottom: 14px;
   left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 24px;
-  border-radius: 9999px;
-  background: rgba(18, 18, 22, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-top: 1px solid rgba(255, 255, 255, 0.32);
-  box-shadow: 
-    0 16px 36px rgba(0, 0, 0, 0.55),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.84rem;
-  letter-spacing: 0.05em;
-  z-index: 25;
-  pointer-events: none;
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  opacity: 1;
-}
-
-.kiosk-hint strong {
-  color: #ffffff;
-}
-
-.kiosk-hint.hidden {
+  transform: translateX(-50%) translateY(65px);
+  display: flex;
+  gap: 8px;
+  background: rgba(10, 6, 0, 0.88);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 6px 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85), var(--glow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
-  transform: translate(-50%, 12px);
   pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
+  z-index: 120;
 }
 
-/* ==========================================================================
-   Reduced Motion
-   ========================================================================== */
+body[data-theme="green"] .hud-bar { background: rgba(0, 10, 3, 0.88); }
+body[data-theme="cyan"] .hud-bar { background: rgba(2, 8, 13, 0.88); }
+body[data-theme="monochrome"] .hud-bar { background: rgba(5, 5, 5, 0.88); }
 
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --flip-duration: 0.01ms;
+.hud-bar.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hud-btn {
+  background: var(--dim);
+  border: 1px solid var(--border);
+  color: var(--highlight);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 5px 9px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.hud-btn:hover {
+  background: var(--muted);
+  border-color: var(--highlight);
+  color: #ffffff;
+  box-shadow: var(--glow);
+}
+
+.btn-icon {
+  font-size: 10px;
+  color: var(--primary);
+}
+
+/* --------------------------------------------------------------------------
+   10. Compact Screen / Vertical Mobile Optimizations
+   -------------------------------------------------------------------------- */
+@media (max-height: 720px) {
+  .dashboard-container {
+    padding: 10px 12px 14px 12px;
   }
-  .clock-separator {
-    animation: none;
-    opacity: 0.8;
+  .brand-title {
+    font-size: 40px;
+  }
+  .clock-display {
+    font-size: 26px;
+  }
+  .telemetry-grid {
+    gap: 6px;
+  }
+  .sub-telemetry-row {
+    flex: 0 0 80px;
+    gap: 6px;
+  }
+  .turtle-strip {
+    flex: 0 0 60px;
   }
 }

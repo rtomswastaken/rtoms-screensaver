@@ -1,201 +1,189 @@
-# rtoms screensaver
+# RTOMS - Retro CRT Ambient Dashboard & Screensaver
 
-A minimalist, high-performance web screensaver featuring an animated procedural topographic background and a large 24-hour mechanical 3D flip clock with frosted glassmorphism.
+RTOMS is an authentic, retro CRT ambient dashboard and screensaver engineered for vertical 9:16 portrait monitors, mobile docks, and desktop kiosk setups. It evokes vintage amber phosphor terminals, NASA mission-control displays, oscilloscope instrumentation, and early telemetry systems.
 
-Built with pure modern web standards (HTML5 Canvas 2D, CSS 3D transforms, ES6 JavaScript) with zero external dependencies, no build steps, and full offline support.
+The entire interface operates as one continuous convex CRT glass surface with realistic barrel distortion, horizontal phosphor scanlines, fine raster textures, cathode ray beam sweeps, and phosphor bloom glow.
 
----
-
-## Preview
-
-### Monochrome B&W (Default)
-![Monochrome Theme](docs/screenshots/monochrome.png)
-
-### Warm Amber
-![Warm Theme](docs/screenshots/warm.png)
-
-### Emerald Dark Green
-![Emerald Theme](docs/screenshots/emerald.png)
-
-### RGB Gamer Mode
-![RGB Gamer Theme](docs/screenshots/rgb-gamer.png)
+Built entirely with pure vanilla web technologies: zero external dependencies, no node build steps, no heavy frameworks, and full offline resilience.
 
 ---
 
-## Features
+## Visual Previews
 
-- Procedural Topographic Flow: Continuous 3D Simplex noise and Marching Squares contour extraction running on HTML5 Canvas 2D with soft glow bloom and cartographic grid.
-- 24-Hour Mechanical Flip Clock: Centered HH : MM : SS mechanical cards with 3D folding flap physics, realistic crease notches, and system millisecond drift compensation.
-- Frosted Glassmorphism: Refined translucent glass styling across the flip cards, date capsule, and bottom action bar with subtle bevel reflections.
-- Multiple Themes: Instant hotkey switching between Monochrome B&W, Warm Amber, Emerald Tactical Green, and RGB Gamer Rainbow mode.
-- Persistent DOM Architecture: Only animates digits that change (seconds every second; tens of minutes every 10 minutes) for zero memory leaks during multi-hour kiosk runs.
-- Bottom-Edge HUD: Control bar stays completely hidden during screensaver operation and glides into view only when the cursor approaches the bottom edge of the screen.
-- Auto-Hiding Cursor: The mouse cursor automatically disappears after 2.8 seconds of inactivity.
-- Windows Kiosk Launcher: Dedicated double-click batch script for running Microsoft Edge or Chrome in true full-screen kiosk mode.
+### Portrait Mode (Amber Phosphor - Default)
+![Amber Portrait Mode](docs/screenshots/amber-portrait.png)
 
----
+### Landscape Desktop Terminal View
+![Amber Landscape Mode](docs/screenshots/amber-landscape.png)
 
-## Keyboard Controls and Shortcuts
+### Green Phosphor (VT220 Terminal Aesthetic)
+![Green Phosphor Mode](docs/screenshots/green-portrait.png)
 
-| Key | Action |
-| :--- | :--- |
-| T | Cycle themes (Warm -> Emerald -> Monochrome B&W -> RGB Gamer) |
-| F | Toggle Fullscreen mode |
-| Space | Pause / Resume topographic contour animation |
-| M | Cycle contour density (Low -> Medium -> High) |
-| Alt + F4 | Exit Kiosk mode (Windows) |
-| Esc | Exit Fullscreen (Standard browser mode) |
+### Cyan Phosphor (Telemetry & Radar Mode)
+![Cyan Phosphor Mode](docs/screenshots/cyan-portrait.png)
 
-Move your cursor to the bottom edge of the screen to reveal the interactive frosted glass control bar.
+### Monochrome Phosphor (P4 High-Contrast White)
+![Monochrome Phosphor Mode](docs/screenshots/mono-portrait.png)
 
 ---
 
-## How to Customize and Make This Yours
+## Core Features
 
-`rtoms-screensaver` is designed to be easily personalized. You do not need Node.js, npm, or any build tools to modify it.
-
-### 1. Change the Title and Greeting
-Open `index.html` and locate the `<header>` block:
-```html
-<header class="header-container">
-  <div class="site-title" id="site-title">
-    <span class="title-subheading">hello</span>
-    <h1 class="title-heading">rtoms</h1>
-  </div>
-</header>
-```
-- Change `hello` to any subheading (for example: `welcome`, `focus`, or `station`).
-- Change `rtoms` to your own name, initials, or handle.
-
-### 2. Adjust Title Font Sizing
-Open `style.css` and adjust the clamp values under `.title-subheading` and `.title-heading`:
-```css
-.title-subheading {
-  font-size: clamp(1.8rem, 3.5vw, 4rem);
-  font-weight: 700;
-}
-
-.title-heading {
-  font-size: clamp(5.2rem, 13vw, 14.5rem);
-  font-weight: 900;
-}
-```
-
-### 3. Modify or Add New Color Themes
-In `style.css`, color schemes are defined using CSS custom properties on `body[data-theme="..."]`:
-```css
-body[data-theme="your-theme-name"] {
-  --bg-color: #0b0c10;
-  --card-bg: rgba(15, 20, 25, 0.35);
-  --card-border: rgba(100, 200, 255, 0.25);
-  --glass-specular: rgba(100, 200, 255, 0.35);
-  --text-color: #ffffff;
-  --separator-color: #66fcf1;
-  --date-color: #45a29e;
-  --subheading-color: #66fcf1;
-}
-```
-In `topography.js`, update the line and grid colors inside the `render()` method to match your theme palette:
-```javascript
-if (theme === 'your-theme-name') {
-  bgColor = '#0b0c10';
-  gridColor = 'rgba(100, 200, 255, 0.08)';
-  defaultLineColor = 'rgba(100, 200, 255, 0.9)';
-  accentLineColor = 'rgba(150, 230, 255, 1.0)';
-  glowColor = 'rgba(80, 180, 255, 0.55)';
-}
-```
-Finally, add your theme id to the `themes` list in `app.js`:
-```javascript
-const themes = [
-  { id: 'warm', name: 'Warm' },
-  { id: 'darkgreen', name: 'Emerald' },
-  { id: 'monochrome', name: 'B&W' },
-  { id: 'rgb', name: 'RGB Gamer' },
-  { id: 'your-theme-name', name: 'Cyber Blue' }
-];
-```
-
-### 4. Adjust the Topographic Waves
-Open `topography.js` and edit the configuration variables:
-- `this.speed = 0.000038;`: Controls how fast the terrain shifts over time. Lower values create slower, more hypnotic motion.
-- `this.spatialScale = 0.0013;`: Controls the size of the hills and valleys. Increase for tighter curves; decrease for broad landscape ridges.
-- `this.densityPresets`: Controls the number of contour lines per level. Add or remove threshold values in `[0.1, 0.2, ...]` to adjust line spacing.
-- `this.gridSpacing = 56;`: Distance in pixels between cartographic background grid lines.
-
-### 5. Adjust the Clock Size
-In `style.css`, locate `:root` and modify the fluid variables:
-```css
-:root {
-  --card-width: clamp(3.6rem, 9.8vw, 11rem);
-  --card-height: clamp(5.4rem, 15vw, 16.8rem);
-  --font-size: clamp(3.8rem, 10.8vw, 12rem);
-  --card-radius: clamp(8px, 1.3vw, 16px);
-}
-```
-
-### 6. Toggle 12-Hour vs 24-Hour Format
-Open `app.js` and locate `updateTime()`. To switch to 12-hour format:
-```javascript
-// Replace:
-const hours = String(now.getHours()).padStart(2, '0');
-
-// With:
-const rawHours = now.getHours() % 12 || 12;
-const hours = String(rawHours).padStart(2, '0');
-```
+- Continuous Convex CRT Optical Surface: Barrel pincushion glass curvature, radial corner vignette, horizontal phosphor scanlines, fine sub-pixel dot raster, and periodic vertical refresh beam sweeps.
+- Four Phosphor Color Themes: Amber (warm P3 phosphor default), Green (DEC VT220 style), Cyan (radar telemetry style), and Monochrome (P4 high-contrast white). Cycle with the T key or through the bottom HUD. Theme preference is automatically persisted to local storage.
+- Two-Sided Asymmetric Header:
+  - Top Left: Dynamic time-of-day greeting (GOOD MORNING, GOOD AFTERNOON, GOOD EVENING, GOOD NIGHT), large retro display identity (RTOMS), and full calendar date.
+  - Top Right: Real-time digital clock with seconds, local timezone tag, live Open-Meteo weather for Kanjirappally (Kerala, India) featuring custom pixel-art SVG weather icons, temperature, humidity, and wind conditions.
+- Real-Time Telemetry Engines:
+  - Cross-Hatched Histogram: Exact visual replica of vintage CRT chart displays with diagonal cross-hatching fill, spline curve envelope, and dynamic peak percentage callout.
+  - Harmonics Oscilloscope: Multi-wave sinusoidal composite signal overlaid on live frequency spectrum analyzer bars.
+  - Polar Spider / Radar Chart: Six-axis system health monitor (Activity, Signal, Memory, Processing, Stability, Performance) with animated polygon coverage.
+  - Buffer Telemetry Chart: Real-time rolling memory stream line graph with grid markers and time markers.
+  - 360-Degree Radar Sweep: Continuous circular beam sweep with phosphor persistence blips.
+  - Hexadecimal & Binary Stream: Procedural machine-code memory dump stream.
+- Autonomous Pixel-Art Turtle Arcade: Built-in 8-bit retro mini-game where an autonomous pixel turtle navigates a maze using BFS (Breadth-First Search) pathfinding to collect dots, tracking score and dot harvest statistics continuously.
+- Kiosk Mode & Power Management: Includes Windows launch script, HTML5 Fullscreen API toggling, and Screen Wake Lock API integration to prevent display sleep during multi-hour kiosk runs.
+- Bottom-Edge Auto-Hiding HUD: Control panel remains hidden during normal ambient operation. Moving the mouse cursor near the bottom edge reveals frosted glass control buttons. Mouse cursor automatically hides after 2.8 seconds of inactivity.
 
 ---
 
-## Windows Kiosk Launch Guide
+## Keyboard Controls & Shortcuts
 
-### Quick Start
-1. Double-click `launch-kiosk.bat`.
-2. Microsoft Edge (or Google Chrome as fallback) will launch into full-screen kiosk mode (`--kiosk --edge-kiosk-type=fullscreen`) with no address bars, tabs, or desktop borders.
-
-### How to Exit
-Press `Alt + F4` at any time to close the window and return to Windows.
-
----
-
-## Windows Power Settings (For Long-Running Laptops)
-
-While `rtoms-screensaver` actively requests continuous screen activation using the Screen Wake Lock API (`navigator.wakeLock`), Windows OS-level battery saving policies can override browser locks. For a dedicated unattended laptop display:
-
-1. Keep Display Awake:
-   - Open Settings -> System -> Power & battery (or Power & sleep).
-   - Under Screen and sleep, set:
-     - When plugged in, turn off my screen after: Never
-     - When plugged in, put my device to sleep after: Never
-2. Prevent Sleep When Lid is Closed:
-   - Press Win + R, type `control` and press Enter to open Control Panel.
-   - Go to Hardware and Sound -> Power Options.
-   - Click "Choose what closing the lid does" on the left sidebar.
-   - Set "When I close the lid" (Plugged in) to "Do nothing".
-3. Automatic Launch on Boot:
-   - Press Win + R, type `shell:startup` and press Enter.
-   - Create a shortcut to `launch-kiosk.bat` and place it in the Startup folder.
+| Key | Action | Description |
+| :--- | :--- | :--- |
+| T | Cycle Theme | Switches between Amber, Green, Cyan, and Monochrome |
+| Space | Pause / Live | Freezes or resumes telemetry graphs and oscilloscope waves |
+| F | Fullscreen | Toggles full-screen display mode |
+| R | Refresh Weather | Forces an immediate Open-Meteo weather update |
+| H | Toggle CRT Optics | Switches between curved convex CRT glass and flat presentation |
+| Alt + F4 | Exit Kiosk | Closes kiosk browser window on Windows systems |
+| Esc | Exit Fullscreen | Returns from fullscreen to regular browser window |
 
 ---
 
-## Project Structure
+## How to Customize and Make It Yours
 
-```text
+RTOMS was designed to be easily customized. All styling, parameters, and telemetry data are modular.
+
+### 1. Changing the Call Sign / Name
+To change the main heading from "RTOMS" to your own name or handle:
+- In `index.html`, locate:
+  ```html
+  <h1 class="brand-title">RTOMS</h1>
+  ```
+  Replace `RTOMS` with your desired name (for example, `ALEX`, `NOVA`, or `ARCH`).
+
+### 2. Changing the Weather Location
+By default, RTOMS displays live weather for Kanjirappally, Kerala, India (coordinates: latitude 9.55, longitude 76.78).
+
+To configure your own city:
+1. Open `dashboard.js` and locate the `fetchWeather` function around line 223:
+   ```javascript
+   const lat = 9.55;  // Replace with your latitude
+   const lon = 76.78; // Replace with your longitude
+   ```
+2. In `index.html`, update the location badge in the header:
+   ```html
+   <span class="badge loc-badge">KANJIRAPPALLY</span>
+   ```
+   Replace `KANJIRAPPALLY` with your city name.
+3. If offline, the dashboard falls back gracefully to default temperature and weather data defined in `dashboard.js`.
+
+### 3. Adding or Modifying Phosphor Themes
+Color palettes are defined via CSS custom properties in `style.css` and matching theme definitions in `dashboard.js`.
+
+To modify the default Amber color or add your own palette:
+- In `style.css`, edit the CSS variables under `:root` or create a new `body[data-theme="your-theme"]` block:
+  ```css
+  body[data-theme="purple"] {
+    --bg: #09000a;
+    --primary: #d442f5;
+    --highlight: #f3a6ff;
+    --muted: rgba(212, 66, 245, 0.32);
+    --dim: rgba(212, 66, 245, 0.08);
+    --border: rgba(212, 66, 245, 0.28);
+    --border-strong: rgba(212, 66, 245, 0.6);
+  }
+  ```
+- In `dashboard.js`, append your theme definition to the `themes` array:
+  ```javascript
+  {
+    id: 'purple',
+    name: 'Purple',
+    bg: '#09000a',
+    primary: '#d442f5',
+    highlight: '#f3a6ff',
+    muted: 'rgba(212, 66, 245, 0.32)',
+    dim: 'rgba(212, 66, 245, 0.08)'
+  }
+  ```
+
+### 4. Customizing Telemetry & Oscilloscope
+All procedural charts are generated inside `telemetry.js`:
+- To adjust the histogram bars, edit `initHistogramData()` in `telemetry.js`.
+- To alter the harmonics and speed of the oscilloscope, adjust `freq1`, `freq2`, and `freq3` in `renderOscilloscope()`.
+- To rename the radar chart axes, update the `this.radarAxes` array in `initRadarChartData()`.
+
+### 5. Customizing the Turtle Arcade
+The autonomous maze runner is located in `turtle.js`:
+- Adjust `this.turtle.speed` to make the turtle faster or slower.
+- Customize the maze dimensions by changing `this.cols` and `this.rows`.
+- Customize the 8x8 pixel turtle sprite definition in `drawTurtle()`.
+
+---
+
+## Windows Kiosk Setup & Deployment
+
+A ready-to-run Windows launcher is provided in `launch-kiosk.bat`.
+
+### Launching in Kiosk Mode
+1. Clone or download this repository onto your Windows machine:
+   ```bash
+   git clone https://github.com/rtomswastaken/rtoms-screensaver.git
+   ```
+2. Double-click `launch-kiosk.bat`.
+3. The dashboard will launch in Microsoft Edge (or Google Chrome) in true fullscreen kiosk mode, hiding all address bars, tabs, toolbars, and system borders.
+
+### Exiting Kiosk Mode
+- Press `Alt + F4` to exit the kiosk application at any time.
+
+### Windows Power Configuration for Dedicated Kiosks
+If running this application on a dedicated vertical secondary monitor or kiosk laptop:
+1. Open Windows Settings -> System -> Power & Sleep.
+2. Set "When plugged in, turn off screen after" to "Never".
+3. Set "When plugged in, PC goes to sleep after" to "Never".
+4. The dashboard automatically requests a browser Screen Wake Lock when active.
+
+---
+
+## Technical Specifications
+
+- Rendering Engine: Pure HTML5 Canvas 2D with Retina/DPR scaling support.
+- CSS Architecture: Continuous 3D convex CRT transformation pipeline with CSS custom property theming.
+- Network Dependencies: Zero external runtime dependencies. Fallback monospace fonts ensure 100% offline capability.
+- Weather Service: Open-Meteo REST API (public free tier, no API key required).
+- Frame Rate: Consistent 60 FPS update cycle driven by `requestAnimationFrame`. Automatically throttles when the browser tab is hidden to conserve power.
+
+---
+
+## File Structure
+
+```
 rtoms-screensaver/
-├── index.html        # Semantic HTML, SVG icons, persistent flip cards
-├── style.css         # Glassmorphism, 3D flip card physics, responsive styles
-├── app.js            # Time sync, theme manager, Wake Lock, bottom-edge HUD
-├── topography.js     # Procedural 3D Simplex noise and Marching Squares engine
-├── launch-kiosk.bat  # Windows kiosk launcher script
-├── README.md         # Documentation, customization guide, and preview screenshots
-├── docs/
-│   ├── screenshots/  # High-resolution theme previews
-│   └── superpowers/  # Design specifications
-└── .gitignore
+├── index.html          # Semantic CRT markup and chassis structure
+├── style.css           # CRT optical shaders, animations, and phosphor themes
+├── dashboard.js        # Clock, greeting, weather API, theme persistence, and HUD
+├── telemetry.js        # Canvas 2D engines for histogram, oscilloscope, radar, and hex stream
+├── turtle.js           # Autonomous 8-bit BFS turtle maze arcade engine
+├── launch-kiosk.bat    # Windows batch launcher for Edge/Chrome kiosk mode
+├── README.md           # Documentation, customization guide, and setup instructions
+├── .gitignore          # Git exclusion rules
+└── docs/
+    └── screenshots/    # High-resolution previews for all phosphor themes
 ```
 
 ---
 
 ## License
 
-MIT License. Free to use, customize, and distribute.
+MIT License. Free to use, adapt, and build upon.
