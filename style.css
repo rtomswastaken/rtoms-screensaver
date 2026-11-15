@@ -15,9 +15,9 @@
   --muted: rgba(255, 176, 0, 0.32);
   --dim: rgba(255, 176, 0, 0.08);
   --border: rgba(255, 176, 0, 0.28);
-  --border-strong: rgba(255, 176, 0, 0.6);
+  --border-strong: rgba(255, 176, 0, 0.65);
   --glow: 0 0 8px rgba(255, 176, 0, 0.45), 0 0 18px rgba(255, 176, 0, 0.15);
-  --glow-strong: 0 0 12px rgba(255, 176, 0, 0.75), 0 0 28px rgba(255, 176, 0, 0.3);
+  --glow-strong: 0 0 14px rgba(255, 176, 0, 0.8), 0 0 32px rgba(255, 176, 0, 0.35);
   --bezel-color: #100f0d;
   --bezel-border: #22201b;
 }
@@ -30,9 +30,9 @@ body[data-theme="green"] {
   --muted: rgba(51, 255, 102, 0.32);
   --dim: rgba(51, 255, 102, 0.08);
   --border: rgba(51, 255, 102, 0.28);
-  --border-strong: rgba(51, 255, 102, 0.6);
+  --border-strong: rgba(51, 255, 102, 0.65);
   --glow: 0 0 8px rgba(51, 255, 102, 0.45), 0 0 18px rgba(51, 255, 102, 0.15);
-  --glow-strong: 0 0 12px rgba(51, 255, 102, 0.75), 0 0 28px rgba(51, 255, 102, 0.3);
+  --glow-strong: 0 0 14px rgba(51, 255, 102, 0.8), 0 0 32px rgba(51, 255, 102, 0.35);
   --bezel-color: #0c120e;
   --bezel-border: #18261c;
 }
@@ -45,9 +45,9 @@ body[data-theme="cyan"] {
   --muted: rgba(0, 240, 255, 0.32);
   --dim: rgba(0, 240, 255, 0.08);
   --border: rgba(0, 240, 255, 0.28);
-  --border-strong: rgba(0, 240, 255, 0.6);
+  --border-strong: rgba(0, 240, 255, 0.65);
   --glow: 0 0 8px rgba(0, 240, 255, 0.45), 0 0 18px rgba(0, 240, 255, 0.15);
-  --glow-strong: 0 0 12px rgba(0, 240, 255, 0.75), 0 0 28px rgba(0, 240, 255, 0.3);
+  --glow-strong: 0 0 14px rgba(0, 240, 255, 0.8), 0 0 32px rgba(0, 240, 255, 0.35);
   --bezel-color: #0b1117;
   --bezel-border: #17242e;
 }
@@ -60,9 +60,9 @@ body[data-theme="monochrome"] {
   --muted: rgba(240, 240, 240, 0.3);
   --dim: rgba(240, 240, 240, 0.08);
   --border: rgba(240, 240, 240, 0.28);
-  --border-strong: rgba(240, 240, 240, 0.6);
+  --border-strong: rgba(240, 240, 240, 0.65);
   --glow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(240, 240, 240, 0.12);
-  --glow-strong: 0 0 12px rgba(240, 240, 240, 0.65), 0 0 28px rgba(240, 240, 240, 0.25);
+  --glow-strong: 0 0 14px rgba(240, 240, 240, 0.7), 0 0 32px rgba(240, 240, 240, 0.28);
   --bezel-color: #121212;
   --bezel-border: #242424;
 }
@@ -93,7 +93,7 @@ body.cursor-hidden {
 }
 
 /* --------------------------------------------------------------------------
-   2. Vintage CRT Chassis & Convex Glass Container
+   2. Vintage CRT Chassis & Screen Container
    -------------------------------------------------------------------------- */
 .crt-monitor {
   width: 100vw;
@@ -105,13 +105,11 @@ body.cursor-hidden {
   padding: 8px;
 }
 
-/* Authentic Convex Curved Screen */
+/* Widescreen landscape alignment (centers 9:16 portrait monitor on desktop) */
 .crt-screen {
   position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 580px; /* 9:16 proportioned width for vertical monitors / mobile */
-  max-height: 98vh;
+  width: min(100%, calc(98vh * 9 / 16));
+  height: 98vh;
   aspect-ratio: 9 / 16;
   background-color: var(--bg);
   border-radius: 28px;
@@ -127,31 +125,33 @@ body.cursor-hidden {
   transition: border-radius 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* On wide screens without 9:16 constraint */
-@media (min-aspect-ratio: 9/16) {
+@media (min-aspect-ratio: 1/1) {
   .crt-screen {
     height: 98vh;
-    width: auto;
+    width: calc(98vh * 9 / 16);
+    max-width: 98vw;
+    aspect-ratio: 9 / 16;
   }
 }
 
-/* On mobile or native portrait displays */
-@media (max-width: 600px), (max-aspect-ratio: 9/16) {
+/* Portrait orientation (like 9:16 vertical monitors 1080x1920 or mobile screens) */
+@media (max-aspect-ratio: 1/1) {
   .crt-monitor {
     padding: 0;
     background: var(--bg);
   }
   .crt-screen {
-    max-width: 100vw;
-    max-height: 100vh;
     width: 100vw;
     height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    aspect-ratio: auto;
     border-radius: 0;
-    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.85);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.92);
   }
 }
 
-/* Flat / Disabled CRT Mode */
+/* Disabled CRT Optics Mode */
 body.crt-disabled .crt-screen {
   border-radius: 0;
   box-shadow: none;
@@ -279,7 +279,7 @@ body.crt-disabled .dashboard-container {
   z-index: 105;
 }
 
-/* Cathode Ray Tube Subtle Phosphor Flicker */
+/* Cathode Ray Tube Phosphor Flicker */
 @keyframes crtCathodeFlicker {
   0% { opacity: 0.992; }
   50% { opacity: 1; }
@@ -299,7 +299,7 @@ body.crt-disabled .dashboard-container {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 18px 20px 24px 20px;
+  padding: 20px 24px 22px 24px;
   overflow: hidden;
   z-index: 10;
   text-shadow: var(--glow);
@@ -307,65 +307,88 @@ body.crt-disabled .dashboard-container {
 }
 
 /* --------------------------------------------------------------------------
-   5. Two-Sided Header (Greeting & Identity vs Clock & Weather)
+   5. Enriched Two-Sided Header (Occupies the Top Section of the CRT Screen)
    -------------------------------------------------------------------------- */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding-bottom: 12px;
   margin-bottom: 10px;
-  border-bottom: 1px dashed var(--border);
-  gap: 12px;
+  border-bottom: 2px dashed var(--border-strong);
+  gap: 16px;
+  flex: 0 0 22%;
+  min-height: 180px;
+  box-sizing: border-box;
   flex-shrink: 0;
 }
 
-/* Header Left: Greeting & RTOMS Identity */
+/* Header Left: Huge "GOOD MORNING RTOMS" Headline & Date */
 .header-left {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1;
+  height: 100%;
 }
 
-.greeting-text {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--highlight);
-  opacity: 0.85;
-}
-
-.brand-title {
+.brand-heading {
+  margin: 0;
+  padding: 0;
   font-family: 'VT323', 'Share Tech Mono', monospace;
-  font-size: 62px;
-  line-height: 0.85;
-  letter-spacing: 4px;
-  font-weight: 700;
   color: var(--highlight);
   text-shadow: var(--glow-strong);
-  margin: 3px 0 4px 0;
+  line-height: 0.8;
+}
+
+.greeting-prefix {
+  display: block;
+  font-size: clamp(24px, 3.8vw, 44px);
+  letter-spacing: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--highlight);
+  opacity: 0.95;
+  margin-bottom: 2px;
+}
+
+.brand-rtoms {
+  display: block;
+  font-size: clamp(86px, 16vw, 154px);
+  letter-spacing: 7px;
+  font-weight: 700;
+  line-height: 0.78;
+  color: var(--highlight);
+  text-shadow: var(--glow-strong);
 }
 
 .date-text {
-  font-size: 10.5px;
-  letter-spacing: 1.5px;
+  font-size: clamp(13px, 1.8vw, 22px);
+  letter-spacing: 2.2px;
   color: var(--primary);
-  opacity: 0.9;
+  opacity: 0.95;
+  font-weight: 600;
+  margin-top: 6px;
 }
 
-/* Header Right: Live Digital Clock & Kanjirappally Weather */
+/* Header Right: Large Digital Clock & Kanjirappally Weather */
 .header-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
   text-align: right;
+  flex-shrink: 0;
+  height: 100%;
+  gap: 8px;
 }
 
 .clock-display {
   font-family: 'VT323', 'Share Tech Mono', monospace;
-  font-size: 32px;
-  line-height: 0.95;
-  letter-spacing: 2px;
+  font-size: clamp(58px, 9.5vw, 98px);
+  line-height: 0.82;
+  letter-spacing: 3px;
   font-weight: 700;
   color: var(--highlight);
   text-shadow: var(--glow-strong);
@@ -374,17 +397,17 @@ body.crt-disabled .dashboard-container {
 .meta-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin: 4px 0 6px 0;
+  gap: 8px;
+  margin: 1px 0;
 }
 
 .badge {
-  font-size: 9.5px;
-  padding: 1px 5px;
-  letter-spacing: 1px;
+  font-size: clamp(11px, 1.4vw, 16px);
+  padding: 2px 8px;
+  letter-spacing: 1.2px;
   border: 1px solid var(--border);
   background-color: var(--dim);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .tz-badge {
@@ -400,11 +423,11 @@ body.crt-disabled .dashboard-container {
 .weather-box {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   background-color: var(--dim);
-  border: 1px solid var(--border);
-  padding: 4px 7px;
-  border-radius: 3px;
+  border: 1px solid var(--border-strong);
+  padding: 8px 14px;
+  border-radius: 4px;
 }
 
 .weather-icon-box {
@@ -412,8 +435,13 @@ body.crt-disabled .dashboard-container {
   align-items: center;
   justify-content: center;
   color: var(--highlight);
-  width: 20px;
-  height: 20px;
+  width: 36px;
+  height: 36px;
+}
+
+.weather-icon-box svg {
+  width: 36px;
+  height: 36px;
 }
 
 .weather-info {
@@ -425,43 +453,105 @@ body.crt-disabled .dashboard-container {
 .weather-temp-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .weather-temp {
   font-family: 'VT323', 'Share Tech Mono', monospace;
-  font-size: 18px;
+  font-size: clamp(34px, 4.8vw, 52px);
   line-height: 1;
   font-weight: bold;
   color: var(--highlight);
 }
 
 .weather-desc {
-  font-size: 10px;
-  letter-spacing: 1px;
+  font-size: clamp(12px, 1.6vw, 17px);
+  letter-spacing: 1.2px;
   color: var(--primary);
+  font-weight: 600;
 }
 
 .weather-details {
-  font-size: 8.5px;
-  letter-spacing: 0.8px;
-  opacity: 0.8;
+  font-size: clamp(10px, 1.3vw, 14px);
+  letter-spacing: 0.9px;
+  opacity: 0.9;
   color: var(--primary);
 }
 
 /* --------------------------------------------------------------------------
-   6. Main Telemetry Visualizations Grid (2x2 Side-by-Side)
+   6. Middle Banner Graph: Carrier Signal Flux Monitor (Selection 8)
    -------------------------------------------------------------------------- */
-.telemetry-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px;
-  flex: 1 1 54%;
-  min-height: 0;
+.flux-section {
+  flex: 0 0 76px;
+  height: 76px;
   margin-bottom: 10px;
+  width: 100%;
 }
 
+.flux-card {
+  width: 100%;
+  height: 100%;
+}
+
+.flux-wrap {
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   7. Main Telemetry Stage: Row 1 (4-Col) & Lower Split Section
+   -------------------------------------------------------------------------- */
+.telemetry-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+/* Row 1: 4 Columns (Histogram 1 Col, Oscilloscope 3 Cols) */
+.telemetry-row-quad {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Lower Split: Left Stack (Memory + Terminal) vs Right (Large Radar Sweep) */
+.telemetry-lower-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  flex: 1.2;
+  min-height: 0;
+}
+
+.lower-left-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  min-height: 0;
+}
+
+.card-memory {
+  flex: 1;
+  min-height: 0;
+}
+
+.card-terminal {
+  flex: 1;
+  min-height: 0;
+}
+
+.card-radar-large {
+  height: 100%;
+  min-height: 0;
+}
+
+/* Base Card Styling */
 .telemetry-card {
   display: flex;
   flex-direction: column;
@@ -470,16 +560,17 @@ body.crt-disabled .dashboard-container {
   border-radius: 4px;
   overflow: hidden;
   position: relative;
+  min-height: 0;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 7px;
-  background: rgba(0, 0, 0, 0.4);
+  padding: 3px 6px;
+  background: rgba(0, 0, 0, 0.48);
   border-bottom: 1px solid var(--border);
-  font-size: 9px;
+  font-size: clamp(8.5px, 1vw, 11px);
   letter-spacing: 1px;
   flex-shrink: 0;
 }
@@ -491,7 +582,7 @@ body.crt-disabled .dashboard-container {
 
 .card-status {
   color: var(--highlight);
-  font-size: 8.5px;
+  font-size: 8px;
   opacity: 0.85;
 }
 
@@ -514,93 +605,20 @@ body.crt-disabled .dashboard-container {
 }
 
 /* --------------------------------------------------------------------------
-   7. Sub-Telemetry Row (360 Radar & Hex Stream)
-   -------------------------------------------------------------------------- */
-.sub-telemetry-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  flex: 0 0 100px;
-  min-height: 85px;
-  margin-bottom: 10px;
-}
-
-.sub-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--dim);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.radar-wrap,
-.hex-wrap {
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  min-height: 0;
-}
-
-/* --------------------------------------------------------------------------
-   8. Autonomous Pixel-Art Turtle Arcade Mini-Game Strip
-   -------------------------------------------------------------------------- */
-.turtle-strip {
-  display: flex;
-  flex-direction: column;
-  background: var(--dim);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 5px 8px;
-  flex: 0 0 78px;
-  min-height: 70px;
-  overflow: hidden;
-}
-
-.strip-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 9px;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  color: var(--primary);
-}
-
-.strip-sub {
-  color: var(--highlight);
-  font-size: 8px;
-  opacity: 0.8;
-}
-
-.turtle-canvas-wrap {
-  width: 100%;
-  height: 48px;
-  position: relative;
-}
-
-.turtle-canvas-wrap canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-  image-rendering: pixelated;
-}
-
-/* --------------------------------------------------------------------------
-   9. Bottom Edge Auto-Hiding Control HUD
+   8. Bottom Edge Auto-Hiding Control HUD
    -------------------------------------------------------------------------- */
 .hud-bar {
   position: absolute;
-  bottom: 14px;
+  bottom: 12px;
   left: 50%;
   transform: translateX(-50%) translateY(65px);
   display: flex;
-  gap: 8px;
-  background: rgba(10, 6, 0, 0.88);
+  flex-wrap: nowrap;
+  gap: 5px;
+  background: rgba(10, 6, 0, 0.92);
   border: 1px solid var(--border-strong);
   border-radius: 20px;
-  padding: 6px 12px;
+  padding: 5px 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85), var(--glow);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -608,11 +626,12 @@ body.crt-disabled .dashboard-container {
   pointer-events: none;
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
   z-index: 120;
+  max-width: 96%;
 }
 
-body[data-theme="green"] .hud-bar { background: rgba(0, 10, 3, 0.88); }
-body[data-theme="cyan"] .hud-bar { background: rgba(2, 8, 13, 0.88); }
-body[data-theme="monochrome"] .hud-bar { background: rgba(5, 5, 5, 0.88); }
+body[data-theme="green"] .hud-bar { background: rgba(0, 10, 3, 0.92); }
+body[data-theme="cyan"] .hud-bar { background: rgba(2, 8, 13, 0.92); }
+body[data-theme="monochrome"] .hud-bar { background: rgba(5, 5, 5, 0.92); }
 
 .hud-bar.visible {
   transform: translateX(-50%) translateY(0);
@@ -625,14 +644,15 @@ body[data-theme="monochrome"] .hud-bar { background: rgba(5, 5, 5, 0.88); }
   border: 1px solid var(--border);
   color: var(--highlight);
   font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 1px;
-  padding: 5px 9px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
   border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
+  white-space: nowrap;
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
@@ -644,31 +664,29 @@ body[data-theme="monochrome"] .hud-bar { background: rgba(5, 5, 5, 0.88); }
 }
 
 .btn-icon {
-  font-size: 10px;
+  font-size: 9.5px;
   color: var(--primary);
 }
 
 /* --------------------------------------------------------------------------
-   10. Compact Screen / Vertical Mobile Optimizations
+   9. Responsive Mobile / Small Height Fallback
    -------------------------------------------------------------------------- */
 @media (max-height: 720px) {
   .dashboard-container {
     padding: 10px 12px 14px 12px;
   }
-  .brand-title {
-    font-size: 40px;
+  .brand-rtoms {
+    font-size: 50px;
   }
   .clock-display {
-    font-size: 26px;
+    font-size: 28px;
   }
-  .telemetry-grid {
+  .flux-section {
+    flex: 0 0 54px;
+    height: 54px;
+    margin-bottom: 6px;
+  }
+  .telemetry-stage {
     gap: 6px;
-  }
-  .sub-telemetry-row {
-    flex: 0 0 80px;
-    gap: 6px;
-  }
-  .turtle-strip {
-    flex: 0 0 60px;
   }
 }

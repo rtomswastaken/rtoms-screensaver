@@ -23,16 +23,18 @@
       <!-- Primary 9:16 Portrait Dashboard Container -->
       <main class="dashboard-container" id="dashboard-container">
         
-        <!-- Header: Two-Sided Retro Layout -->
+        <!-- Header: Top 1/3rd Identity Section (Big "GOOD MORNING RTOMS", Big Clock, Date & Weather) -->
         <header class="dashboard-header">
-          <!-- Top Left: Personalized Dynamic Greeting & Identity -->
+          <!-- Top Left: Huge "GOOD MORNING RTOMS" Headline & Date -->
           <div class="header-left">
-            <span class="greeting-text" id="greeting-text">GOOD MORNING,</span>
-            <h1 class="brand-title">RTOMS</h1>
+            <h1 class="brand-heading">
+              <span class="greeting-prefix" id="greeting-text">GOOD MORNING,</span>
+              <span class="brand-rtoms">RTOMS</span>
+            </h1>
             <div class="date-text" id="date-text">SUNDAY · NOVEMBER 15 · 2026</div>
           </div>
 
-          <!-- Top Right: Live Digital Clock, Timezone & Kanjirappally Weather -->
+          <!-- Top Right: Huge Digital Clock, Timezone & Kanjirappally Live Weather -->
           <div class="header-right">
             <div class="clock-display" id="clock-digits">12:00:00 AM</div>
             <div class="meta-row">
@@ -42,8 +44,8 @@
             
             <div class="weather-box" id="weather-box">
               <div class="weather-icon-box" id="weather-icon" aria-hidden="true">
-                <!-- Fallback Pixel Art SVG Icon -->
-                <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+                <!-- Pixel Art SVG Icon -->
+                <svg width="32" height="32" viewBox="0 0 16 16" fill="currentColor">
                   <rect x="7" y="1" width="2" height="2"/>
                   <rect x="7" y="13" width="2" height="2"/>
                   <rect x="1" y="7" width="2" height="2"/>
@@ -66,88 +68,87 @@
           </div>
         </header>
 
-        <!-- Main Telemetry Grid (Side-by-side 2-column layout) -->
-        <section class="telemetry-grid">
-          <!-- Panel 1: Cross-Hatched Histogram (matches reference photo) -->
-          <div class="telemetry-card">
+        <!-- Middle Banner Graph: Carrier Signal Flux Monitor -->
+        <section class="flux-section">
+          <div class="telemetry-card flux-card">
             <div class="card-header">
-              <span class="card-tag">HISTOGRAM // LUX DISTRIBUTION</span>
-              <span class="card-status">PEAK 57.1%</span>
+              <span class="card-tag">CARRIER SIGNAL FLUX // SPECTRAL TRACE</span>
+              <span class="card-status">LOCK: 99.8% · 142.8 µV</span>
             </div>
-            <div class="canvas-wrap">
-              <canvas id="canvas-histogram"></canvas>
-            </div>
-          </div>
-
-          <!-- Panel 2: Live Oscilloscope & Audio/Harmonic Spectrum -->
-          <div class="telemetry-card">
-            <div class="card-header">
-              <span class="card-tag">OSCILLOSCOPE // HARMONICS</span>
-              <span class="card-status">440 HZ RES</span>
-            </div>
-            <div class="canvas-wrap">
-              <canvas id="canvas-oscilloscope"></canvas>
-            </div>
-          </div>
-
-          <!-- Panel 3: Polar Radar Spider Chart -->
-          <div class="telemetry-card">
-            <div class="card-header">
-              <span class="card-tag">POLAR RADAR // SYSTEM HEALTH</span>
-              <span class="card-status">INDEX 92.4</span>
-            </div>
-            <div class="canvas-wrap">
-              <canvas id="canvas-radar-chart"></canvas>
-            </div>
-          </div>
-
-          <!-- Panel 4: Memory & Throughput Telemetry -->
-          <div class="telemetry-card">
-            <div class="card-header">
-              <span class="card-tag">BUFFER TELEMETRY // MEMORY</span>
-              <span class="card-status">0.78 MB/S</span>
-            </div>
-            <div class="canvas-wrap">
-              <canvas id="canvas-memory"></canvas>
+            <div class="canvas-wrap flux-wrap">
+              <canvas id="canvas-flux"></canvas>
             </div>
           </div>
         </section>
 
-        <!-- Sub-Telemetry Row: 360 Radar Sweep & Procedural Hex Dump -->
-        <section class="sub-telemetry-row">
-          <!-- Panel 5: Circular 360-degree Radar Sweep -->
-          <div class="sub-card radar-card">
-            <div class="card-header">
-              <span class="card-tag">RADAR SWEEP // 360°</span>
-              <span class="card-status">ACTIVE</span>
+        <!-- Main Telemetry Stage -->
+        <div class="telemetry-stage">
+          
+          <!-- Row 1: 4 Columns (Histogram = 1 Col, Wide Oscilloscope = 3 Cols) -->
+          <section class="telemetry-row-quad">
+            <!-- 1 Column: Cross-Hatched Histogram -->
+            <div class="telemetry-card card-histogram">
+              <div class="card-header">
+                <span class="card-tag">HIST // LUX</span>
+                <span class="card-status">57.1%</span>
+              </div>
+              <div class="canvas-wrap">
+                <canvas id="canvas-histogram"></canvas>
+              </div>
             </div>
-            <div class="canvas-wrap radar-wrap">
-              <canvas id="canvas-radar-sweep"></canvas>
-            </div>
-          </div>
 
-          <!-- Panel 6: Hexadecimal & Binary Stream Feed -->
-          <div class="sub-card hex-card">
-            <div class="card-header">
-              <span class="card-tag">HEX BUFFER // STREAM</span>
-              <span class="card-status">HEX DUMP</span>
+            <!-- 3 Columns: Wide Harmonics Oscilloscope & Full Spectrum -->
+            <div class="telemetry-card card-oscilloscope">
+              <div class="card-header">
+                <span class="card-tag">OSCILLOSCOPE // HARMONICS & FREQUENCY SPECTRUM</span>
+                <span class="card-status">440 HZ RES</span>
+              </div>
+              <div class="canvas-wrap">
+                <canvas id="canvas-oscilloscope"></canvas>
+              </div>
             </div>
-            <div class="canvas-wrap hex-wrap">
-              <canvas id="canvas-hex-feed"></canvas>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        <!-- Bottom Feature: Autonomous Pixel-Art Turtle Arcade Mini-Game -->
-        <section class="turtle-strip">
-          <div class="strip-header">
-            <span class="strip-tag">TURTLE ARCADE // 08-BIT AUTOPILOT</span>
-            <span class="strip-sub">BFS MAZE CHASE · DOT HARVEST</span>
-          </div>
-          <div class="turtle-canvas-wrap">
-            <canvas id="canvas-turtle"></canvas>
-          </div>
-        </section>
+          <!-- Lower Section: Left (Memory Graph + Terminal under it) vs Right (Large 360 Radar) -->
+          <section class="telemetry-lower-split">
+            <!-- Left Column: Memory Graph (half height) + Terminal Stream under it -->
+            <div class="lower-left-stack">
+              <!-- Memory History Graph (half height) -->
+              <div class="telemetry-card card-memory">
+                <div class="card-header">
+                  <span class="card-tag">BUFFER TELEMETRY // MEMORY</span>
+                  <span class="card-status">0.78 MB/S</span>
+                </div>
+                <div class="canvas-wrap">
+                  <canvas id="canvas-memory"></canvas>
+                </div>
+              </div>
+
+              <!-- Terminal Stream Diagnostics (directly under memory graph) -->
+              <div class="telemetry-card card-terminal">
+                <div class="card-header">
+                  <span class="card-tag">TERMINAL STREAM // DIAGNOSTICS</span>
+                  <span class="card-status">LIVE FEED</span>
+                </div>
+                <div class="canvas-wrap">
+                  <canvas id="canvas-terminal"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Large 360° Circular Radar Sweep -->
+            <div class="telemetry-card card-radar-large">
+              <div class="card-header">
+                <span class="card-tag">RADAR SWEEP // 360° RANGE MONITOR</span>
+                <span class="card-status">ACTIVE SWEEP</span>
+              </div>
+              <div class="canvas-wrap">
+                <canvas id="canvas-radar-sweep"></canvas>
+              </div>
+            </div>
+          </section>
+
+        </div>
 
       </main>
 
@@ -164,6 +165,10 @@
         <button class="hud-btn" id="btn-theme" type="button">
           <span class="btn-icon">[*]</span>
           <span class="btn-label">Theme: Amber [T]</span>
+        </button>
+        <button class="hud-btn" id="btn-speed" type="button">
+          <span class="btn-icon">[>]</span>
+          <span class="btn-label">Speed: 0.5x [S]</span>
         </button>
         <button class="hud-btn" id="btn-pause" type="button">
           <span class="btn-icon">[||]</span>
@@ -188,7 +193,6 @@
 
   <!-- Scripts -->
   <script src="telemetry.js"></script>
-  <script src="turtle.js"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>

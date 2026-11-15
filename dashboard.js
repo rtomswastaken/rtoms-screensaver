@@ -1,12 +1,13 @@
 /**
  * RTOMS Retro CRT Ambient Dashboard - Main Controller
  * Orchestrates:
- * - Local time greeting schedule & live retro digital clock
+ * - Dynamic time-of-day greeting schedule & live retro digital clock
  * - Kanjirappally live weather via Open-Meteo & pixel-art SVG weather icons
  * - 4 Phosphor Themes with persistence (T key)
+ * - Global Graph Animation Speed Control (0.5x default, S key)
  * - Global CRT Optical pipeline toggling (H key)
- * - TelemetryEngine and TurtleArcade loops
- * - Fullscreen & Wake Lock lifecycle
+ * - Unified TelemetryEngine 60 FPS loop
+ * - Fullscreen & Screen Wake Lock lifecycle
  */
 
 (function () {
@@ -61,8 +62,24 @@
     if (idx !== -1) currentThemeIdx = idx;
   }
 
+  // =========================================================================
+  // 2. Global Graph Animation Speed Control
+  // =========================================================================
+  const speedPresets = [
+    { value: 0.5, label: 'Speed: 0.5x [S]' },
+    { value: 0.75, label: 'Speed: 0.75x [S]' },
+    { value: 1.0, label: 'Speed: 1.0x [S]' },
+    { value: 1.5, label: 'Speed: 1.5x [S]' }
+  ];
+
+  let currentSpeedIdx = 0; // Default: 0.5x (Very Slow)
+  const savedSpeed = localStorage.getItem('rtoms_graph_speed');
+  if (savedSpeed) {
+    const idx = speedPresets.findIndex(s => s.value === parseFloat(savedSpeed));
+    if (idx !== -1) currentSpeedIdx = idx;
+  }
+
   let telemetry = null;
-  let turtle = null;
 
   function applyTheme(idx) {
     currentThemeIdx = idx;
@@ -71,7 +88,6 @@
     localStorage.setItem('rtoms_phosphor_theme', t.id);
 
     if (telemetry) telemetry.setTheme(t);
-    if (turtle) turtle.setTheme(t);
 
     const themeBadge = document.getElementById('btn-theme');
     if (themeBadge) {
@@ -85,8 +101,27 @@
     applyTheme(next);
   }
 
+  function applySpeed(idx) {
+    currentSpeedIdx = idx;
+    const preset = speedPresets[currentSpeedIdx];
+    localStorage.setItem('rtoms_graph_speed', preset.value.toString());
+
+    if (telemetry) telemetry.setSpeedMultiplier(preset.value);
+
+    const btnSpeed = document.getElementById('btn-speed');
+    if (btnSpeed) {
+      const lbl = btnSpeed.querySelector('.btn-label');
+      if (lbl) lbl.textContent = preset.label;
+    }
+  }
+
+  function cycleSpeed() {
+    const next = (currentSpeedIdx + 1) % speedPresets.length;
+    applySpeed(next);
+  }
+
   // =========================================================================
-  // 2. Greeting, Date & Live Clock
+  // 3. Greeting, Date & Live Clock
   // =========================================================================
   const elGreeting = document.getElementById('greeting-text');
   const elDate = document.getElementById('date-text');
@@ -124,7 +159,7 @@
 
     if (elGreeting) elGreeting.textContent = greeting;
 
-    // Date: SUNDAY · NOVEMBER 15 · 2026
+    // Formatted Date: SUNDAY · NOVEMBER 15 · 2026
     if (elDate) {
       const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
       const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
@@ -154,7 +189,7 @@
   updateClockAndGreeting();
 
   // =========================================================================
-  // 3. Weather System (Kanjirappally, Kerala, India via Open-Meteo)
+  // 4. Weather System (Kanjirappally, Kerala, India via Open-Meteo)
   // =========================================================================
   const elWeatherTemp = document.getElementById('weather-temp');
   const elWeatherDesc = document.getElementById('weather-desc');
@@ -163,7 +198,7 @@
 
   // Custom Pixel-Art SVGs
   const pixelIcons = {
-    sun: `<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+    sun: `<svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor">
       <rect x="7" y="1" width="2" height="2"/>
       <rect x="7" y="13" width="2" height="2"/>
       <rect x="1" y="7" width="2" height="2"/>
@@ -174,7 +209,7 @@
       <rect x="11" y="11" width="2" height="2"/>
       <rect x="5" y="5" width="6" height="6"/>
     </svg>`,
-    moon: `<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+    moon: `<svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor">
       <rect x="6" y="2" width="5" height="2"/>
       <rect x="4" y="4" width="3" height="2"/>
       <rect x="3" y="6" width="3" height="4"/>
@@ -183,12 +218,12 @@
       <rect x="11" y="4" width="2" height="2"/>
       <rect x="11" y="10" width="2" height="2"/>
     </svg>`,
-    cloud: `<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+    cloud: `<svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor">
       <rect x="5" y="4" width="6" height="2"/>
       <rect x="3" y="6" width="10" height="2"/>
       <rect x="2" y="8" width="12" height="4"/>
     </svg>`,
-    partlyCloudy: `<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+    partlyCloudy: `<svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor">
       <rect x="2" y="2" width="2" height="2"/>
       <rect x="5" y="1" width="2" height="2"/>
       <rect x="1" y="5" width="2" height="2"/>
@@ -196,7 +231,7 @@
       <rect x="6" y="7" width="6" height="2"/>
       <rect x="4" y="9" width="10" height="4"/>
     </svg>`,
-    rain: `<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+    rain: `<svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor">
       <rect x="5" y="3" width="6" height="2"/>
       <rect x="3" y="5" width="10" height="2"/>
       <rect x="2" y="7" width="12" height="3"/>
@@ -206,13 +241,13 @@
       <rect x="4" y="13" width="2" height="2"/>
       <rect x="8" y="13" width="2" height="2"/>
     </svg>`,
-    thunder: `<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+    thunder: `<svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor">
       <rect x="5" y="2" width="6" height="2"/>
       <rect x="3" y="4" width="10" height="2"/>
       <rect x="2" y="6" width="12" height="3"/>
       <polygon points="7,9 9,9 6,13 8,13 5,16 10,11 8,11 10,9"/>
     </svg>`,
-    fog: `<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+    fog: `<svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor">
       <rect x="2" y="4" width="12" height="2"/>
       <rect x="4" y="7" width="10" height="2"/>
       <rect x="1" y="10" width="13" height="2"/>
@@ -238,7 +273,7 @@
 
       updateWeatherUI(tempC, code, humidity, wind);
     } catch (err) {
-      // Graceful fallback realistic data for Kanjirappally
+      // Graceful fallback data for Kanjirappally
       updateWeatherUI(29, 2, 78, 2.5);
     }
   }
@@ -280,7 +315,7 @@
   setInterval(fetchWeather, 15 * 60 * 1000); // 15 min update
 
   // =========================================================================
-  // 4. CRT Optical Effects Toggle (H key)
+  // 5. CRT Optical Effects Toggle (H key)
   // =========================================================================
   const savedCrt = localStorage.getItem('rtoms_crt_mode');
   if (savedCrt === 'disabled') {
@@ -298,7 +333,7 @@
   }
 
   // =========================================================================
-  // 5. Fullscreen & Interaction Handling
+  // 6. Fullscreen & Interaction Handling
   // =========================================================================
   function isFullscreen() {
     return Boolean(
@@ -333,7 +368,7 @@
   document.addEventListener('fullscreenchange', updateFullscreenUI);
   document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
 
-  // Auto-launch fullscreen on initial interaction anywhere
+  // Auto-launch fullscreen on initial interaction
   let hasInteracted = false;
   function handleFirstClick() {
     if (!hasInteracted) {
@@ -365,7 +400,7 @@
   });
 
   // =========================================================================
-  // 6. Bottom-Edge Auto-Hiding Control HUD
+  // 7. Bottom-Edge Auto-Hiding Control HUD
   // =========================================================================
   const hudBar = document.getElementById('hud-bar');
   let idleTimeout = null;
@@ -374,7 +409,7 @@
     document.body.classList.remove('cursor-hidden');
     clearTimeout(idleTimeout);
 
-    // Only display HUD if cursor is within bottom 90px of viewport
+    // Display HUD only when cursor is within bottom 90px of viewport
     const isAtBottom = e.clientY >= (window.innerHeight - 90);
     if (isAtBottom && hudBar) {
       hudBar.classList.add('visible');
@@ -394,7 +429,7 @@
   }
 
   // =========================================================================
-  // 7. Keyboard Shortcuts
+  // 8. Keyboard Shortcuts
   // =========================================================================
   window.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -404,6 +439,9 @@
     if (key === 't') {
       e.preventDefault();
       cycleTheme();
+    } else if (key === 's') {
+      e.preventDefault();
+      cycleSpeed();
     } else if (key === ' ' || e.code === 'Space') {
       e.preventDefault();
       if (telemetry) {
@@ -430,6 +468,9 @@
   const btnTheme = document.getElementById('btn-theme');
   if (btnTheme) btnTheme.addEventListener('click', cycleTheme);
 
+  const btnSpeed = document.getElementById('btn-speed');
+  if (btnSpeed) btnSpeed.addEventListener('click', cycleSpeed);
+
   const btnPause = document.getElementById('btn-pause');
   if (btnPause) btnPause.addEventListener('click', () => {
     if (telemetry) {
@@ -449,38 +490,31 @@
   if (btnCrt) btnCrt.addEventListener('click', toggleCrtEffects);
 
   // =========================================================================
-  // 8. Canvas Visualizations Initialization & Main Loop
+  // 9. Canvas Visualizations Initialization & Main Loop
   // =========================================================================
   window.addEventListener('DOMContentLoaded', () => {
     // 1. Telemetry Canvas Engine
     telemetry = new TelemetryEngine();
     telemetry.registerCanvas('histogram', document.getElementById('canvas-histogram'));
     telemetry.registerCanvas('oscilloscope', document.getElementById('canvas-oscilloscope'));
-    telemetry.registerCanvas('radarChart', document.getElementById('canvas-radar-chart'));
+    telemetry.registerCanvas('flux', document.getElementById('canvas-flux'));
     telemetry.registerCanvas('memory', document.getElementById('canvas-memory'));
+    telemetry.registerCanvas('terminal', document.getElementById('canvas-terminal'));
     telemetry.registerCanvas('radarSweep', document.getElementById('canvas-radar-sweep'));
-    telemetry.registerCanvas('hexFeed', document.getElementById('canvas-hex-feed'));
 
-    // 2. Turtle Arcade Mini-Game
-    const turtleCanvas = document.getElementById('canvas-turtle');
-    if (turtleCanvas) {
-      turtle = new TurtleArcade(turtleCanvas);
-    }
-
-    // Apply saved or default theme
+    // Apply saved or default theme & speed
     applyTheme(currentThemeIdx);
+    applySpeed(currentSpeedIdx);
 
     // Responsive Canvas Resize Observer
     window.addEventListener('resize', () => {
       if (telemetry) telemetry.resizeAll();
-      if (turtle) turtle.resize();
     });
 
-    // 3. Unified 60 FPS Render Loop
+    // 2. Unified 60 FPS Render Loop
     function mainLoop() {
       if (document.visibilityState === 'visible') {
         if (telemetry) telemetry.render();
-        if (turtle) turtle.render();
       }
       requestAnimationFrame(mainLoop);
     }
